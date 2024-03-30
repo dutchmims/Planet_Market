@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-p%*h$v%q-8-$9fu@1to(f(1fryp5s@h7+nn+(uj+fsca167n2n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-dutchmims-planetmarket-cpi10scjff0.ws-eu110.gitpod.io']
+ALLOWED_HOSTS = ['8000-dutchmims-planetmarket-icy7fl30xo0.ws-eu110.gitpod.io']
 
 # Application definition
 
@@ -176,7 +176,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-FREE_DELIVERY_THRESHOLD = 50
+FREE_DELIVERY_THRESHOLD = 85
 STANDARD_DELIVERY_PERCENTAGE = 10
 
 # Stripe
