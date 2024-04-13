@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /accounts/
+Disallow: /profiles/
+Disallow: /private/
+Disallow: /products/
+Disallow: /bag/
+Disallow: /checkout/
+Disallow: /home/
+Disallow: /static/
+Allow: /public/
+Sitemap: https://www.example.com/sitemap.xml
