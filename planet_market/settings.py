@@ -131,7 +131,10 @@ WSGI_APPLICATION = 'planet_market.wsgi.application'
 # }
 
 # DATABASES = {
-#    'default': dj_database_url.parse('postgres://hzxtjrwx:bfAdhchUDfcxQB_kKikxCxfy4HHfXzll@tyke.db.elephantsql.com/hzxtjrwx')
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
 # }
 
 DATABASES = {'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))}
