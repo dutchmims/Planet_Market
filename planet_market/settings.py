@@ -15,6 +15,10 @@ from pathlib import Path
 import os
 import dj_database_url
 
+if os.path.exists("env.py"):
+  import env 
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,7 +31,7 @@ SECRET_KEY = 'django-insecure-p%*h$v%q-8-$9fu@1to(f(1fryp5s@h7+nn+(uj+fsca167n2n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-dutchmims-planetmarket-2kdqad4gcgi.ws-eu110.gitpod.io' ]
+ALLOWED_HOSTS = ['8000-dutchmims-planetmarket-2kdqad4gcgi.ws-eu111.gitpod.io']
 
 # Application definition
 
@@ -118,16 +122,19 @@ WSGI_APPLICATION = 'planet_market.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+# }
 
 # DATABASES = {
 #    'default': dj_database_url.parse('postgres://hzxtjrwx:bfAdhchUDfcxQB_kKikxCxfy4HHfXzll@tyke.db.elephantsql.com/hzxtjrwx')
 # }
+
+DATABASES = {'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
