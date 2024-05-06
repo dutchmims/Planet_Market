@@ -1,0 +1,1 @@
+web: gunicorn planet_market.wsgi:application
