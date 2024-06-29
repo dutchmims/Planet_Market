@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Category
+from .models import Product, Category, Review
 
 # Register your models here.
 
@@ -12,7 +12,6 @@ class ProductAdmin(admin.ModelAdmin):
         'rating',
         'image',
     )
-
     ordering = ('sku',)
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -21,5 +20,16 @@ class CategoryAdmin(admin.ModelAdmin):
         'name',
     )
 
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = (
+        'product',
+        'user_name',
+        'rating',
+        'created_at',
+    )
+    search_fields = ('user_name', 'review_text')
+    list_filter = ('rating', 'created_at')
+
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(Review, ReviewAdmin)
