@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-p%*h$v%q-8-$9fu@1to(f(1fryp5s@h7+nn+(uj+fsca167n2n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-dutchmims-planetmarket-2kdqad4gcgi.ws-eu113.gitpod.io', 'planet-market-ef36a376b17d.herokuapp.com']
+ALLOWED_HOSTS = ['8000-dutchmims-planetmarket-bpjhkysy2er.ws.codeinstitute-ide.net', 'planet-market-ef36a376b17d.herokuapp.com']
 
 # Application definition
 
