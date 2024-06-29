@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-p%*h$v%q-8-$9fu@1to(f(1fryp5s@h7+nn+(uj+fsca167n2n'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -238,6 +238,6 @@ FREE_DELIVERY_THRESHOLD = 85
 STANDARD_DELIVERY_PERCENTAGE = 10
 STRIPE_CURRENCY = 'usd'
 STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', 'pk_test_51OgDfTCSVsESJyem25ugNm6eiJz2KUZ4G5rorQM8HsN05FWh7UpY5QTiZpR83Et7kgYLzAHe62tKC0M1BGB8bg4F00hPIfVJ6L')
-STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', 'sk_test_51OgDfTCSVsESJyembCcwxy4JBCrIIp9nVrv4WDdZYjrbZc9RACxI6r78fB64HfRe4aZ6agS1ivoLoF12dL7Lx8sj005Ph1fDWs')
+STRIPE_SECRET_KEY = os.environ['STRIPE_SECRET_KEY']
 STRIPE_WH_SECRET = os.getenv('STRIPE_WH_SECRET', '')
 DEFAULT_FROM_EMAIL = 'planetmarket@example.com'
