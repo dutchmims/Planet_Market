@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect, reverse, get_object_or_404, HttpResponse
-from django.views.decorators.http import require_POST
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import messages
 from django.conf import settings
+from django.http import HttpResponse
+from django.views.decorators.http import require_POST  # Import require_POST decorator
 
-from .forms import OrderForm
-from .models import Order, OrderLineItem
+from .forms import OrderForm, DiscountCodeForm
+from .models import Order, OrderLineItem, DiscountCode
 
 from products.models import Product
 from profiles.models import UserProfile
@@ -23,13 +24,12 @@ def cache_checkout_data(request):
         stripe.PaymentIntent.modify(pid, metadata={
             'bag': json.dumps(request.session.get('bag', {})),
             'save_info': request.POST.get('save_info'),
-            'username': request.user,
+            'username': request.user.username if request.user.is_authenticated else None,
         })
         return HttpResponse(status=200)
     except Exception as e:
-        messages.error(request, 'Sorry, your payment cannot be \
-            processed right now. Please try again later.')
-        return HttpResponse(content=e, status=400)
+        messages.error(request, 'Sorry, your payment cannot be processed right now. Please try again later.')
+        return HttpResponse(content=str(e), status=400)
 
 
 def checkout(request):
@@ -52,12 +52,28 @@ def checkout(request):
         }
 
         order_form = OrderForm(form_data)
+        discount_form = DiscountCodeForm(request.POST)
+
         if order_form.is_valid():
             order = order_form.save(commit=False)
             pid = request.POST.get('client_secret').split('_secret')[0]
             order.stripe_pid = pid
             order.original_bag = json.dumps(bag)
+
+            if discount_form.is_valid():
+                try:
+                    discount_code = DiscountCode.objects.get(code=discount_form.cleaned_data['code'], active=True)
+                    # Apply discount logic
+                    # Example: Calculate discount amount and update order total
+                    # discount_amount = order.grand_total * (discount_code.discount_percentage / 100)
+                    # order.grand_total -= discount_amount
+                    order.discount = discount_code
+                except DiscountCode.DoesNotExist:
+                    messages.error(request, "This discount code is invalid or inactive.")
+                    discount_form = DiscountCodeForm()  # Clear the form on error
+
             order.save()
+
             for item_id, item_data in bag.items():
                 try:
                     product = Product.objects.get(id=item_id)
@@ -78,23 +94,21 @@ def checkout(request):
                             )
                             order_line_item.save()
                 except Product.DoesNotExist:
-                    messages.error(request, (
-                        "One of the products in your bag wasn't found in our database. "
-                        "Please call us for assistance!")
-                    )
+                    messages.error(request, "One of the products in your bag wasn't found in our database.")
                     order.delete()
                     return redirect(reverse('view_bag'))
 
             # Save the info to the user's profile if all is well
             request.session['save_info'] = 'save-info' in request.POST
             return redirect(reverse('checkout_success', args=[order.order_number]))
+
         else:
-            messages.error(request, 'There was an error with your form. \
-                Please double check your information.')
+            messages.error(request, 'There was an error with your form. Please double check your information.')
+
     else:
         bag = request.session.get('bag', {})
         if not bag:
-            messages.error(request, "There's nothing in your bag at the moment")
+            messages.error(request, "There's nothing in your bag at the moment.")
             return redirect(reverse('products'))
 
         current_bag = bag_contents(request)
@@ -125,14 +139,15 @@ def checkout(request):
                 order_form = OrderForm()
         else:
             order_form = OrderForm()
+        discount_form = DiscountCodeForm()
 
     if not stripe_public_key:
-        messages.warning(request, 'Stripe public key is missing. \
-            Did you forget to set it in your environment?')
+        messages.warning(request, 'Stripe public key is missing. Did you forget to set it in your environment?')
 
     template = 'checkout/checkout.html'
     context = {
         'order_form': order_form,
+        'discount_form': discount_form,
         'stripe_public_key': stripe_public_key,
         'client_secret': intent.client_secret,
     }
@@ -168,14 +183,12 @@ def checkout_success(request, order_number):
             if user_profile_form.is_valid():
                 user_profile_form.save()
 
-    messages.success(request, f'Order successfully processed! \
-        Your order number is {order_number}. A confirmation \
-        email will be sent to {order.email}.')
+    messages.success(request, f'Order successfully processed! Your order number is {order_number}. A confirmation email will be sent to {order.email}.')
 
     if 'bag' in request.session:
         del request.session['bag']
 
-    template = 'checkout/checkout_success.html'
+    template = 'checkout/checkout_success' + '.html'
     context = {
         'order': order,
     }

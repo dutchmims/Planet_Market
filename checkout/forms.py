@@ -1,6 +1,5 @@
 from django import forms
-from .models import Order
-
+from .models import Order, DiscountCode
 
 class OrderForm(forms.ModelForm):
     class Meta:
@@ -37,3 +36,21 @@ class OrderForm(forms.ModelForm):
                 self.fields[field].widget.attrs['placeholder'] = placeholder
             self.fields[field].widget.attrs['class'] = 'stripe-style-input'
             self.fields[field].label = False
+
+class DiscountCodeForm(forms.Form):
+    code = forms.CharField(
+        max_length=15,
+        required=True,
+        widget=forms.TextInput(attrs={
+            'class': 'stripe-style-input',
+            'placeholder': 'Discount Code'
+        })
+    )
+
+    def clean_code(self):
+        code = self.cleaned_data.get('code')
+        try:
+            discount_code = DiscountCode.objects.get(code=code, active=True)
+        except DiscountCode.DoesNotExist:
+            raise forms.ValidationError("This discount code is invalid or inactive.")
+        return code

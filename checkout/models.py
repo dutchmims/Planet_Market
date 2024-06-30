@@ -1,14 +1,11 @@
 import uuid
-
 from django.db import models
 from django.db.models import Sum
 from django.conf import settings
-
 from django_countries.fields import CountryField
-
 from products.models import Product
 from profiles.models import UserProfile
-
+from django.utils import timezone
 
 class Order(models.Model):
     order_number = models.CharField(max_length=32, null=False, editable=False)
@@ -29,6 +26,7 @@ class Order(models.Model):
     grand_total = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0)
     original_bag = models.TextField(null=False, blank=False, default='')
     stripe_pid = models.CharField(max_length=254, null=False, blank=False, default='')
+    discount_code = models.ForeignKey('DiscountCode', on_delete=models.SET_NULL, null=True, blank=True)
 
     def _generate_order_number(self):
         """
@@ -39,14 +37,22 @@ class Order(models.Model):
     def update_total(self):
         """
         Update grand total each time a line item is added,
-        accounting for delivery costs.
+        accounting for delivery costs and discounts.
         """
         self.order_total = self.lineitems.aggregate(Sum('lineitem_total'))['lineitem_total__sum'] or 0
+        
+        # Apply discount if a discount code is applied
+        if self.discount_code:
+            self.grand_total = self.order_total - ((self.discount_code.discount_percentage / 100) * self.order_total) + self.delivery_cost
+        else:
+            self.grand_total = self.order_total + self.delivery_cost
+        
+        # Check if eligible for free delivery
         if self.order_total < settings.FREE_DELIVERY_THRESHOLD:
             self.delivery_cost = self.order_total * settings.STANDARD_DELIVERY_PERCENTAGE / 100
         else:
             self.delivery_cost = 0
-        self.grand_total = self.order_total + self.delivery_cost
+        
         self.save()
 
     def save(self, *args, **kwargs):
@@ -58,6 +64,18 @@ class Order(models.Model):
             self.order_number = self._generate_order_number()
         super().save(*args, **kwargs)
 
+    def apply_discount_code(self, code):
+        """
+        Apply a discount code to the order.
+        """
+        try:
+            discount_code = DiscountCode.objects.get(code=code, active=True, expiry_date__gt=timezone.now())
+            self.discount_code = discount_code
+            self.update_total()
+            return True, "Discount applied successfully."
+        except DiscountCode.DoesNotExist:
+            return False, "Invalid discount code or expired."
+
     def __str__(self):
         return self.order_number
 
@@ -65,7 +83,7 @@ class Order(models.Model):
 class OrderLineItem(models.Model):
     order = models.ForeignKey(Order, null=False, blank=False, on_delete=models.CASCADE, related_name='lineitems')
     product = models.ForeignKey(Product, null=False, blank=False, on_delete=models.CASCADE)
-    product_size = models.CharField(max_length=2, null=True, blank=True) # XS, S, M, L, XL
+    product_size = models.CharField(max_length=2, null=True, blank=True)  # XS, S, M, L, XL
     quantity = models.IntegerField(null=False, blank=False, default=0)
     lineitem_total = models.DecimalField(max_digits=6, decimal_places=2, null=False, blank=False, editable=False)
 
@@ -76,6 +94,18 @@ class OrderLineItem(models.Model):
         """
         self.lineitem_total = self.product.price * self.quantity
         super().save(*args, **kwargs)
+        # Update the order total after saving the line item
+        self.order.update_total()
 
     def __str__(self):
         return f'SKU {self.product.sku} on order {self.order.order_number}'
+
+
+class DiscountCode(models.Model):
+    code = models.CharField(max_length=15, unique=True, null=False, blank=False)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=False, blank=False)
+    active = models.BooleanField(default=True)
+    expiry_date = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return self.code
