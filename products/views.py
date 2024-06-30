@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.db.models.functions import Lower
-from .models import Product, Category, Review
+from .models import Product, Category, Review, ProductVariant  # Import ProductVariant here
 from .forms import ProductForm, ReviewForm
 
 # Create your views here.
@@ -124,6 +124,19 @@ def edit_product(request, product_id):
         form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             form.save()
+            # Handle ProductVariant update or deletion if needed
+            size = form.cleaned_data.get('size')
+            color = form.cleaned_data.get('color')
+            if size and color:
+                # Update existing ProductVariant or create new one
+                product_variant, created = ProductVariant.objects.update_or_create(
+                    product=product,
+                    defaults={'size': size, 'color': color}
+                )
+            else:
+                # If size and color are not provided, delete existing ProductVariant if it exists
+                ProductVariant.objects.filter(product=product).delete()
+            
             messages.success(request, 'Successfully updated product!')
             return redirect(reverse('product_detail', args=[product.id]))
         else:

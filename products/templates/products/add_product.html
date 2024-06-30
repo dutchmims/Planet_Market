@@ -32,6 +32,17 @@
                             {{ field }}
                         {% endif %}
                     {% endfor %}
+                    
+                    <!-- Product Variant Fields -->
+                    <div class="form-group">
+                        <label for="id_size">Size</label>
+                        <input type="text" class="form-control" id="id_size" name="size" placeholder="Enter size">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_color">Color</label>
+                        <input type="text" class="form-control" id="id_color" name="color" placeholder="Enter color">
+                    </div>
+                    
                     <div class="text-right">
                         <a class="btn btn-outline-black rounded-0" href="{% url 'products' %}">Cancel</a>
                         <button class="btn btn-black rounded-0" type="submit">Add Product</button>

@@ -2,7 +2,6 @@ from django.db import models
 
 
 class Category(models.Model):
-
     class Meta:
         verbose_name_plural = 'Categories'
         
@@ -21,7 +20,6 @@ class Product(models.Model):
     sku = models.CharField(max_length=254, null=True, blank=True)
     name = models.CharField(max_length=254)
     description = models.TextField()
-    has_sizes = models.BooleanField(default=False, null=True, blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     rating = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     image_url = models.URLField(max_length=1024, null=True, blank=True)
@@ -41,3 +39,13 @@ class Review(models.Model):
 
     def __str__(self):
         return f"Review for {self.product.name} by {self.user_name}"
+
+
+class ProductVariant(models.Model):
+    product = models.ForeignKey(Product, related_name='variants', on_delete=models.CASCADE)
+    sku = models.CharField(max_length=254)
+    size = models.CharField(max_length=50)
+    color = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.product.name} - {self.color} - {self.size}"
