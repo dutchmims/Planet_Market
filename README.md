@@ -1,9 +1,6 @@
 # **Planet Market**
 
-
-
 [Live Site](https://planet-market-ef36a376b17d.herokuapp.com/)
-
 
 ## Table of contents
 
@@ -16,8 +13,6 @@
 7. Deployment
 8. Bugs 
 9. Citation of all sources(code, images, text)
-
-# Project Overview
 
 # Project Overview
 
@@ -62,7 +57,6 @@ I created a list of user stories to assist in the development and implementation
 13.	As a user, I want to be able to leave a review and view other users reviews
 14.	As a user, I want to be able to add or remove a product to the favorites list.
 
-  
 **Website owner goals**
 
 1. As the website owner, I want to gain as many users as possible.
@@ -232,4 +226,3 @@ All text has been created by myself.
 
 ## Images 
  
-
