@@ -2,6 +2,8 @@
 
 [Live Site](https://planet-market-ef36a376b17d.herokuapp.com/)
 
+![Planet Market](<Screenshot 2024-08-10 at 15.22.23.png>)
+
 ## Table of contents
 
 1. Project Overview
