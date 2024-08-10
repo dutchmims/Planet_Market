@@ -18,7 +18,7 @@
 
 # Project Overview
 
-Planet Market is a e-commerce website produced for my fifth and final portfolio project for Code Institute's Full Stack Software Development course. The main goal of this project is to create a full-stack website using Django and PostgreSQL. The website is an online shop where users can browse and purchase electronic and digital hardware. The website is fully responsive and has a contemporary design with minal fonts and colour palette. 
+Planet Market is a e-commerce website produced for my fifth and final portfolio project for Code Institute's Full Stack Software Development course. The main goal of this project is to create a full-stack website using Django AND AWS. The website is an online shop where users can browse and purchase electronic and digital hardware. The website is fully responsive and has a contemporary design with minal fonts and colour palette. 
 
 # User Stories/Goals
 
@@ -71,33 +71,54 @@ I created a list of user stories to assist in the development and implementation
 
 ## Header
 
-The header is showing the website name and logo on the left, and the links to. 
+* The header is showing the website name and logo on the left, the 4 dropdown meun's as we go from right to left and the My Account and Bag on the top right.
 
-## Footer
+## My Account
 
-The footer is showing 5 social media links and the website copyright at the bottom left.
-
-## Homepage
-
-* The home page includes a photograph with text. This lets the viewer know what the website is about and whats coming next.
-  
-### CTA
-
-The CTA button on the Homepage is a button that brings
-
-### 
+* The home page includes an image with text. This lets the viewer know what the website is about and whats coming next.
 
 ## Register
 
-* I used the Django AllAuth for all the authentication on this blog site.  Django AllAut provides HTML pages for signing up and signing in and signing out. I have edited these HTML pages and styled them to show the same style, UX, font and colour palatte that I have chosen for my website as a whole.
+* I used the Django AllAuth for all the authentication on this ecommerce site.  Django AllAut provides HTML pages for signing up and signing in and signing out. I have edited these HTML pages and styled them to show the same style, UX, font and colour palatte that I have chosen for my website as a whole.
   
 ## Login
 
-* As you can see, the same colour for the CTA button on the Login screen is on the Homepage.
+* 
 
-## Logout
+## Bag
 
-For the Logout screen
+* 
+
+## CTA
+
+The CTA button 'Shop Now" on the homepage is a button that brings you to All Products page.
+
+### Dropdown 
+
+## ALL PRODUCTS
+* 
+* 
+* 
+* 
+
+## COMPUTERS
+* 
+* 
+* 
+* 
+
+## DIGITAL DEVICES
+* 
+* 
+* 
+* 
+
+## SPECIAL OFFERS
+* 
+* 
+* 
+* 
+
 
 # UX/UI  
 
@@ -113,13 +134,15 @@ For the Logout screen
     I used Pacifico because it has a nice, jovial feel to it. It's not too serious and lets the user know the site and the brand is friendly and easy going.
     
   - **Roboto**
-    I used Rototo because it has a dual nature. It has a mechanical skeleton and the forms are largely geometric. At the same time, the font features friendly        and open curves. 
+    I used Rototo because it has a dual nature. It has a mechanical skeleton and the forms are largely geometric. At the same time, the font features friendly and open curves. 
     
   - **Lato**
     I used Lato because it's serious but friendly. It is a humanist sans-serif typeface and pairs well with Robot.
     
   
 ### Wireframe design 
+
+
 
 # Testing
 
