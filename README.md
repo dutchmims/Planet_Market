@@ -142,7 +142,9 @@ The CTA button 'Shop Now" on the homepage is a button that brings you to All Pro
   
 ### Wireframe design 
 
-
+![Wirefrema image of Desktop](<Screenshot 2024-08-10 at 16.34.09.png>) 
+![Wirefrema image of Tablet](<Screenshot 2024-08-10 at 16.34.00.png>) 
+![Wirefrema image of Mobile](<Screenshot 2024-08-10 at 16.33.44.png>)
 
 # Testing
 
