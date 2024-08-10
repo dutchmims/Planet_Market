@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['8000-dutchmims-planetmarket-bpjhkysy2er.ws.codeinstitute-ide.net', 'planet-market-ef36a376b17d.herokuapp.com']
 

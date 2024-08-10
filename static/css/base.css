@@ -3,8 +3,8 @@ html {
 }
 
 body {
-    background: url('/media/homepage2.jpg') no-repeat center center fixed;
-    background-size: cover;
+    background: url('/media/homepage2.jpg') no-repeat center center fixed !important;
+    background-size: cover !important;
     height: calc(100vh - 164px);
     color: #555;
     font-family: 'Rototo';
