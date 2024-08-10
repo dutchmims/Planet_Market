@@ -2,7 +2,7 @@
 
 
 
-[Live Site]()
+[Live Site](https://planet-market-ef36a376b17d.herokuapp.com/)
 
 
 ## Table of contents
@@ -19,6 +19,10 @@
 
 # Project Overview
 
+# Project Overview
+
+Planet Market is a e-commerce website produced for my fifth and final portfolio project for Code Institute's Full Stack Software Development course. The main goal of this project is to create a full-stack website using Django and PostgreSQL. The website is an online shop where users can browse and purchase electronic and digital hardware. The website is fully responsive and has a contemporary design with minal fonts and colour palette. 
+
 # User Stories/Goals
 
 **Agile**
@@ -28,37 +32,44 @@ I created a list of user stories to assist in the development and implementation
 
 **Project Goals**
 
-1. To create a website that is easy to navigate and use.
-2. To create a website that is visually appealing.
-3. To create a website that is responsive on all devices.
-4. To create a website that is interactive.
-5. To create a website that is fun to use.
-6. To create a website that is easy to use.
+1. As a developer, I want to create a website that is easy to navigate and use.
+2. As a developer, I want to create a website that is visually appealing.
+3. As a developer, I want to create a website that is responsive on all devices.
+4. As a developer, I want to create a website that is interactive.
+5. As a developer, I want to create a website that is fun to use.
+6. As a developer, I want to create a website that is easy to use.
 
 **User goals**
 
-1. I want to easily understand the product and whats being offered.
-2. I want to understand the company and thier ethics.
-3. I want to .
-4. I want to .
-5. I want to .
-6. I want to view the website on all different media devices.
+1. As a user, I want to easily understand the product and whats being offered.
+2. As a user, I want to understand the company and thier ethics.
+3. As a user, I want to be able to create an account for future use.
+4. As a user, I want to be able to view the website on any device. and be able to browse, shop and purchase whenever and whereever I want.
+5. As a user, I want to be able to log in and out of my account so that I can access my profile.
+6. As a user, I want to be able to browse, shop and purchase whenever and whereever I want.
   
 **Returning user goals**
 
-1. I want to navigate quickly to get what I came for.
-2. I want to be able to contact the company.
-3. I want to know what other options are available.
-4. I want to .
-5. I want to .
-6. I want to .
+1. As a user, I want to be able to find the products and navigate quickly around the site to get what I came for.
+2. As a user, I want to be able to contact the company for any reason.
+3. As a user, I want to know what other options are available.
+4. As a user, I want to be able to view details of any product.
+8. As a user, I want to be able to add or delete a product to and from my shopping bag.
+9. As a user, I want to be able to view my shopping bag so that I can see the contents.
+10. As a user, I want to be able to  securely so that I can safely purchase my items.
+11.	As a user, I want to be able to view my order history.
+12.	As a user, I want to be able to pay securely.
+13.	As a user, I want to be able to leave a review and view other users reviews
+14.	As a user, I want to be able to add or remove a product to the favorites list.
+
   
 **Website owner goals**
 
-1. I want to gain as many users as possible.
-2. I want to .
-3. I want to .
-4. I want to provide as much information as possible to gain peoples interest in our service.
+1. As the website owner, I want to gain as many users as possible.
+2. As the website owner, I want users to get through the site with minimal effort and get what they came for.
+3. As the website owner, I want users to get the the checkout and complete thier transaction.
+4. As the website owner, I want to provide as much information as possible to gain user interest in our website.
+5. As the website owner, I want my site to be seemless and a pleasure to use.
   
 # Features
 
