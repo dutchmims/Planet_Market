@@ -128,17 +128,12 @@ The CTA button 'Shop Now" on the homepage is a button that brings you to All Pro
 
 ### Font colour
 
+
+
 ### Fonts used
      
-  - **Pacifico**
-    I used Pacifico because it has a nice, jovial feel to it. It's not too serious and lets the user know the site and the brand is friendly and easy going.
-    
   - **Roboto**
     I used Rototo because it has a dual nature. It has a mechanical skeleton and the forms are largely geometric. At the same time, the font features friendly and open curves. 
-    
-  - **Lato**
-    I used Lato because it's serious but friendly. It is a humanist sans-serif typeface and pairs well with Robot.
-    
   
 ### Wireframe design 
 
