@@ -22,4 +22,3 @@ s3transfer==0.10.1
 setuptools==72.1.0
 sqlparse==0.4.4
 stripe==8.1.0
-setuptools>=70.3.0
