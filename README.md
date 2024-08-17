@@ -93,6 +93,8 @@ I created a list of user stories to assist in the development and implementation
 
 The CTA button 'Shop Now" on the homepage is a button that brings you to All Products page.
 
+## Search bar
+
 ### Dropdown 
 
 ## ALL PRODUCTS
@@ -118,6 +120,9 @@ The CTA button 'Shop Now" on the homepage is a button that brings you to All Pro
 * 
 * 
 * 
+
+## Main page
+## Footer
 
 
 # UX/UI  
