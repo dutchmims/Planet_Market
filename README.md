@@ -79,49 +79,51 @@ I created a list of user stories to assist in the development and implementation
 
 ## Register
 
-* I used the Django AllAuth for all the authentication on this ecommerce site.  Django AllAut provides HTML pages for signing up and signing in and signing out. I have edited these HTML pages and styled them to show the same style, UX, font and colour palatte that I have chosen for my website as a whole.
+* I used the Django AllAuth for all the authentication on this ecommerce site.  Django AllAuth provides HTML pages for signing up and signing in and signing out. I have edited these HTML pages and styled them to show the same style, UX, font and colour palatte that I have chosen for my website as a whole.
   
 ## Login
 
-* 
+* I used the Django AllAuth for all the authentication on this ecommerce site.
 
 ## Bag
 
-* 
+* I created a shopping bag to hold products selected until the payment screen and final purchase. Products can be edited in the bag.
 
 ## CTA
 
-The CTA button 'Shop Now" on the homepage is a button that brings you to All Products page.
+* The CTA button 'Shop Now" on the homepage is a button that brings you to All Products page.
 
 ## Search bar
+*  Allows one to search for what it is one wants to find.
 
 ### Dropdown 
 
 ## ALL PRODUCTS
-* 
-* 
-* 
-* 
+* By Price
+* By Rating
+* By Category
+* All Products
 
 ## COMPUTERS
-* 
-* 
-* 
-* 
+* Destops
+* Laptops
+* Notebooks
+* Tablets
 
 ## DIGITAL DEVICES
-* 
-* 
-* 
-* 
+* Phones
+* Digital Watches
+* Fitness Trackers
 
 ## SPECIAL OFFERS
-* 
-* 
-* 
-* 
+* New Arrivals
+* Deals
+* Clearance
+* All Specials
 
 ## Main page
+
+
 ## Footer
 
 
@@ -252,4 +254,6 @@ I had no issues using it on any browser or any device.
 All text has been created by myself.
 
 ## Images 
+
+
  
