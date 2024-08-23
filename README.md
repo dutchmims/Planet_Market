@@ -20,6 +20,10 @@
 
 Planet Market is a e-commerce website produced for my fifth and final portfolio project for Code Institute's Full Stack Software Development course. The main goal of this project is to create a full-stack website using Django AND AWS. The website is an online shop where users can browse and purchase electronic and digital hardware. The website is fully responsive and has a contemporary design with minal fonts and colour palette. 
 
+# Admin Credentials
+* Username: admin
+* Password: Suleyman21!
+
 # User Stories/Goals
 
 **Agile**
