@@ -152,7 +152,10 @@ I created a list of user stories to assist in the development and implementation
 
 ### Lighthouse
 
-- Desktop
+* Desktop
+
+
+
   
 - Mobile
   
