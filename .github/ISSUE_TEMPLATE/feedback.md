@@ -1,7 +1,7 @@
 ---
 name: Feedback
 about: Fix the Submission Feedback
-title: FIX <TITLE>
+title: 'FIX: <TITLE>'
 labels: documentation, fix-feedback
 assignees: dutchmims
 
