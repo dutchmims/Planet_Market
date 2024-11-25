@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 
-import dj_database_url
+import dj_database_url  # type: ignore
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -103,6 +103,8 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.media",
                 "bag.contexts.bag_contents",
+                # Fix | # added by - to handle sitename in meta tags and not hardcoded
+                "home.context_processors.site_name",  # Add site name to all templates
             ],
             "builtins": [
                 "crispy_forms.templatetags.crispy_forms_tags",
@@ -110,14 +112,7 @@ TEMPLATES = [
             ],
         },
     },
-    {
-        'CONTEXT_PROCESSORS': [
-            # Required for canonical URLs
-            'django.template.context_processors.request',
-        ],
-    }
 ]
-
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
@@ -130,11 +125,10 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_ID = 1
-
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
 
 # Remove before submission
-EMAILSERVICE = 1
+EMAILSERVICE = 2
 
 # Start with Console Backend for development
 # Move to File-Based Backend when you need to inspect actual email content
@@ -142,7 +136,6 @@ EMAILSERVICE = 1
 
 if EMAILSERVICE == 1:
     # Zero configuration needed
-    # No third-party dependencies
     # Emails print directly to EMAILSERVICE
     # Perfect for local development
     # Built into Django
@@ -159,12 +152,13 @@ elif EMAILSERVICE == 2:
     EMAIL_FILE_PATH = os.getenv("EMAIL_FILE_PATH", "tmp/email-messages/")
 
 elif EMAILSERVICE == 3:
-    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-    EMAIL_HOST = os.getenv("EMAIL_HOST")
-    EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
-    EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True").lower() == "true"
+    EMAIL_BACKEND = "planet_market.email_backend.EmailBackend"
+    EMAIL_HOST = "smtp.gmail.com"
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
     EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
     EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+    DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 ACCOUNT_EMAIL_REQUIRED = True
@@ -198,13 +192,7 @@ if DEBUG:
 else:
     DATABASES = {"default": dj_database_url.parse(os.getenv("DATABASE_URL"))}
 
-
-# Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
-
-
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
