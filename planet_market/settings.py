@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env_file = os.path.join(BASE_DIR, "env.py")
 env_path = Path(env_file)
 # read the env.py file if it exists
-if os.path.exists(env_file):
+if env_path.exists():
     # pylint: disable=exec-used
     with env_path.open("r", encoding="utf-8") as file:
         exec(file.read())
@@ -87,15 +87,6 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 TEMPLATES = [
     {
-        'CONTEXT_PROCESSORS': [
-            'django.template.context_processors.request',  # Required for canonical URLs
-        ],
-    }
-]
-
-
-TEMPLATES = [
-    {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             os.path.join(BASE_DIR, "templates"),
@@ -119,7 +110,14 @@ TEMPLATES = [
             ],
         },
     },
+    {
+        'CONTEXT_PROCESSORS': [
+            # Required for canonical URLs
+            'django.template.context_processors.request',
+        ],
+    }
 ]
+
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 

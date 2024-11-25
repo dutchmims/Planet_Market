@@ -1,5 +1,4 @@
-"""
-WSGI config for planet_market project.
+"""WSGI config for planet_market project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

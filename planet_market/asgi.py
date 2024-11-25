@@ -1,5 +1,4 @@
-"""
-ASGI config for planet_market project.
+"""ASGI config for planet_market project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
