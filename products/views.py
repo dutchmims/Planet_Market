@@ -3,14 +3,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.db.models.functions import Lower
-from .models import Product, Category, Review, ProductVariant  # Import ProductVariant here
+# Import models
+from .models import Product, Category, ProductVariant
 from .forms import ProductForm, ReviewForm
 
 # Create your views here.
 
 def all_products(request):
-    """ A view to show all products, including sorting and search queries """
-
+    """A view to show all products, including sorting and search queries"""
     products = Product.objects.all()
     query = None
     categories = None
@@ -31,7 +31,7 @@ def all_products(request):
                 if direction == 'desc':
                     sortkey = f'-{sortkey}'
             products = products.order_by(sortkey)
-            
+
         if 'category' in request.GET:
             categories = request.GET['category'].split(',')
             products = products.filter(category__name__in=categories)
@@ -40,10 +40,16 @@ def all_products(request):
         if 'q' in request.GET:
             query = request.GET['q']
             if not query:
-                messages.error(request, "You didn't enter any search criteria!")
+                messages.error(
+                    request,
+                    "You didn't enter any search criteria!"
+                )
                 return redirect(reverse('products'))
-            
-            queries = Q(name__icontains=query) | Q(description__icontains=query)
+
+            queries = (
+                Q(name__icontains=query) |
+                Q(description__icontains=query)
+            )
             products = products.filter(queries)
 
     current_sorting = f'{sort}_{direction}'
@@ -59,8 +65,7 @@ def all_products(request):
 
 
 def product_detail(request, product_id):
-    """ A view to show individual product details and handle reviews """
-
+    """A view to show individual product details and handle reviews"""
     product = get_object_or_404(Product, pk=product_id)
     reviews = product.reviews.all()
 
@@ -72,8 +77,10 @@ def product_detail(request, product_id):
             review.save()
             messages.success(request, 'Your review has been submitted!')
             return redirect(reverse('product_detail', args=[product.id]))
-        else:
-            messages.error(request, 'Failed to submit review. Please ensure the form is valid.')
+        messages.error(
+            request,
+            'Failed to submit review. Please ensure the form is valid.'
+        )
     else:
         form = ReviewForm()
 
@@ -88,7 +95,7 @@ def product_detail(request, product_id):
 
 @login_required
 def add_product(request):
-    """ Add a product to the store """
+    """Add a product to the store"""
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only store owners can do that.')
         return redirect(reverse('home'))
@@ -99,11 +106,13 @@ def add_product(request):
             product = form.save()
             messages.success(request, 'Successfully added product!')
             return redirect(reverse('product_detail', args=[product.id]))
-        else:
-            messages.error(request, 'Failed to add product. Please ensure the form is valid.')
+        messages.error(
+            request,
+            'Failed to add product. Please ensure the form is valid.'
+        )
     else:
         form = ProductForm()
-        
+
     template = 'products/add_product.html'
     context = {
         'form': form,
@@ -114,7 +123,7 @@ def add_product(request):
 
 @login_required
 def edit_product(request, product_id):
-    """ Edit a product in the store """
+    """Edit a product in the store"""
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only store owners can do that.')
         return redirect(reverse('home'))
@@ -128,19 +137,25 @@ def edit_product(request, product_id):
             size = form.cleaned_data.get('size')
             color = form.cleaned_data.get('color')
             if size and color:
-                # Update existing ProductVariant or create new one
-                product_variant, created = ProductVariant.objects.update_or_create(
-                    product=product,
-                    defaults={'size': size, 'color': color}
+                # Update or create ProductVariant
+                product_variant, created = (
+                    ProductVariant.objects.update_or_create(
+                        product=product,
+                        defaults={'size': size, 'color': color}
+                    )
                 )
             else:
-                # If size and color are not provided, delete existing ProductVariant if it exists
-                ProductVariant.objects.filter(product=product).delete()
-            
+                # Remove existing variants if no size/color
+                ProductVariant.objects.filter(
+                    product=product
+                ).delete()
+
             messages.success(request, 'Successfully updated product!')
             return redirect(reverse('product_detail', args=[product.id]))
-        else:
-            messages.error(request, 'Failed to update product. Please ensure the form is valid.')
+        messages.error(
+            request,
+            'Failed to update product. Please ensure the form is valid.'
+        )
     else:
         form = ProductForm(instance=product)
         messages.info(request, f'You are editing {product.name}')
@@ -156,7 +171,7 @@ def edit_product(request, product_id):
 
 @login_required
 def delete_product(request, product_id):
-    """ Delete a product from the store """
+    """Delete a product from the store"""
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only store owners can do that.')
         return redirect(reverse('home'))

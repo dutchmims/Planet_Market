@@ -28,9 +28,10 @@ class ReviewAdmin(admin.ModelAdmin):
     search_fields = ('user_name', 'review_text')
     list_filter = ('rating', 'created_at')
 
-class ProductVariantInline(admin.TabularInline):  # Or admin.StackedInline for a different layout
+class ProductVariantInline(admin.TabularInline):
+    """Inline admin interface for product variants."""
     model = ProductVariant
-    extra = 1  # Number of extra forms displayed
+    extra = 1
 
 class ProductAdminWithVariants(admin.ModelAdmin):
     list_display = (

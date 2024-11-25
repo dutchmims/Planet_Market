@@ -4,14 +4,25 @@ from .models import Product, Category, Review, ProductVariant
 
 
 class ProductForm(forms.ModelForm):
-    size = forms.CharField(max_length=50, required=False)  # Optional field for size
-    color = forms.CharField(max_length=50, required=False)  # Optional field for color
+    """Form for product management."""
+    size = forms.CharField(
+        max_length=50,
+        required=False,
+    )
+    color = forms.CharField(
+        max_length=50,
+        required=False,
+    )
 
     class Meta:
         model = Product
         fields = '__all__'
 
-    image = forms.ImageField(label='Image', required=False, widget=CustomClearableFileInput)
+    image = forms.ImageField(
+        label='Image',
+        required=False,
+        widget=CustomClearableFileInput
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -19,22 +30,25 @@ class ProductForm(forms.ModelForm):
         friendly_names = [(c.id, c.get_friendly_name()) for c in categories]
 
         self.fields['category'].choices = friendly_names
-        for field_name, field in self.fields.items():
+        for _, field in self.fields.items():
             field.widget.attrs['class'] = 'border-black rounded-0'
 
     def save(self, commit=True):
-        product = super().save(commit=False)
+        product = super().save(commit=commit)
         if commit:
-            product.save()
-            # Create ProductVariant instance if size and color are provided
             size = self.cleaned_data.get('size')
             color = self.cleaned_data.get('color')
             if size and color:
-                ProductVariant.objects.create(product=product, size=size, color=color)
+                ProductVariant.objects.create(
+                    product=product,
+                    size=size,
+                    color=color
+                )
         return product
 
 
 class ReviewForm(forms.ModelForm):
+    """Form for product reviews."""
 
     class Meta:
         model = Review
@@ -42,5 +56,5 @@ class ReviewForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
+        for _, field in self.fields.items():
             field.widget.attrs['class'] = 'border-black rounded-0'
