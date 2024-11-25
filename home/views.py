@@ -1,5 +1,6 @@
-from django.shortcuts import render
+# ruff: noqa
 
+from django.shortcuts import render
 
 def index(request):
 
