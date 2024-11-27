@@ -1,11 +1,11 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 
 class Category(models.Model):
-    """Model representing a product category."""
     class Meta:
         verbose_name_plural = 'Categories'
-
+        
     name = models.CharField(max_length=254)
     friendly_name = models.CharField(max_length=254, null=True, blank=True)
 
@@ -17,40 +17,41 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    """Model representing a product."""
-    category = models.ForeignKey(
-        'Category',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL
-    )
+    category = models.ForeignKey('Category', null=True, blank=True, on_delete=models.SET_NULL)
     sku = models.CharField(max_length=254, null=True, blank=True)
     name = models.CharField(max_length=254)
     description = models.TextField()
-    price = models.DecimalField(max_digits=6, decimal_places=2)
-    rating = models.DecimalField(
-        max_digits=6,
-        decimal_places=2,
-        null=True,
-        blank=True
-    )
+    price = models.DecimalField(max_digits=6, decimal_places=2, validators=[MinValueValidator(0.01)])
+    rating = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, validators=[MinValueValidator(0), MaxValueValidator(5)])
     image_url = models.URLField(max_length=1024, null=True, blank=True)
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, default='noimage.png')
 
     def __str__(self):
         return self.name
+        
+    @property
+    def get_image_url(self):
+        if self.image and hasattr(self.image, 'url'):
+            try:
+                self.image.file
+                return self.image.url
+            except:
+                return '/media/noimage.png'
+        return '/media/noimage.png'
 
 
 class Review(models.Model):
-    """Model representing a product review."""
-    product = models.ForeignKey(
-        Product,
-        related_name='reviews',
-        on_delete=models.CASCADE
-    )
+    product = models.ForeignKey(Product, related_name='reviews', on_delete=models.CASCADE)
     user_name = models.CharField(max_length=254)
     review_text = models.TextField()
-    rating = models.PositiveIntegerField()
+    rating = models.DecimalField(
+        max_digits=2,
+        decimal_places=1,
+        validators=[
+            MinValueValidator(1.0, message="Rating must be at least 1.0"),
+            MaxValueValidator(5.0, message="Rating cannot exceed 5.0")
+        ]
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -59,12 +60,7 @@ class Review(models.Model):
 
 
 class ProductVariant(models.Model):
-    """Model representing a product variant."""
-    product = models.ForeignKey(
-        Product,
-        related_name='variants',
-        on_delete=models.CASCADE
-    )
+    product = models.ForeignKey(Product, related_name='variants', on_delete=models.CASCADE)
     sku = models.CharField(max_length=254)
     size = models.CharField(max_length=50)
     color = models.CharField(max_length=50)

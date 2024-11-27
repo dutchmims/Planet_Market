@@ -1,16 +1,30 @@
-from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.db.models.functions import Lower
-# Import models
-from .models import Product, Category, ProductVariant
+from .models import Product, Category, Review, ProductVariant
 from .forms import ProductForm, ReviewForm
+from django.db import models
+import os
+from django.conf import settings
 
-# Create your views here.
+def get_product_image_url(product):
+    """Helper function to get product image URL with fallback"""
+    if product.image:
+        try:
+            # Check if file exists
+            image_path = os.path.join(settings.MEDIA_ROOT, str(product.image))
+            if os.path.isfile(image_path):
+                return product.image.url
+        except Exception:
+            pass
+    return os.path.join(settings.MEDIA_URL, 'noimage.png')
 
 def all_products(request):
-    """A view to show all products, including sorting and search queries"""
+    """ A view to show all products, including sorting and search queries """
+
     products = Product.objects.all()
     query = None
     categories = None
@@ -31,7 +45,7 @@ def all_products(request):
                 if direction == 'desc':
                     sortkey = f'-{sortkey}'
             products = products.order_by(sortkey)
-
+            
         if 'category' in request.GET:
             categories = request.GET['category'].split(',')
             products = products.filter(category__name__in=categories)
@@ -40,17 +54,15 @@ def all_products(request):
         if 'q' in request.GET:
             query = request.GET['q']
             if not query:
-                messages.error(
-                    request,
-                    "You didn't enter any search criteria!"
-                )
+                messages.error(request, "You didn't enter any search criteria!")
                 return redirect(reverse('products'))
-
-            queries = (
-                Q(name__icontains=query) |
-                Q(description__icontains=query)
-            )
+            
+            queries = Q(name__icontains=query) | Q(description__icontains=query)
             products = products.filter(queries)
+
+    # Process image URLs for all products
+    for product in products:
+        product.safe_image_url = get_product_image_url(product)
 
     current_sorting = f'{sort}_{direction}'
 
@@ -65,29 +77,51 @@ def all_products(request):
 
 
 def product_detail(request, product_id):
-    """A view to show individual product details and handle reviews"""
+    """ A view to show individual product details and handle reviews """
+
     product = get_object_or_404(Product, pk=product_id)
-    reviews = product.reviews.all()
+    # Add safe image URL
+    product.safe_image_url = get_product_image_url(product)
+    
+    reviews = product.reviews.all().order_by('-created_at')
+    has_sizes = product.variants.exists()
+    form = ReviewForm()
 
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
             review.product = product
-            review.save()
-            messages.success(request, 'Your review has been submitted!')
-            return redirect(reverse('product_detail', args=[product.id]))
-        messages.error(
-            request,
-            'Failed to submit review. Please ensure the form is valid.'
-        )
-    else:
-        form = ReviewForm()
+            
+            # Additional validation
+            rating = form.cleaned_data.get('rating')
+            if rating is not None and (rating < 1.0 or rating > 5.0):
+                messages.error(request, 'Rating must be between 1.0 and 5.0')
+                return redirect(reverse('product_detail', args=[product.id]))
+            
+            try:
+                review.save()
+                
+                # Update product rating
+                avg_rating = product.reviews.aggregate(models.Avg('rating'))['rating__avg']
+                if avg_rating:
+                    product.rating = round(avg_rating, 1)
+                    product.save(update_fields=['rating'])
+                
+                messages.success(request, 'Thank you! Your review has been submitted successfully.')
+                return redirect(reverse('product_detail', args=[product.id]))
+            except Exception as e:
+                messages.error(request, f'Error saving review: {str(e)}')
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f'{field}: {error}')
 
     context = {
         'product': product,
         'reviews': reviews,
         'form': form,
+        'has_sizes': has_sizes,
     }
 
     return render(request, 'products/product_detail.html', context)
@@ -95,7 +129,7 @@ def product_detail(request, product_id):
 
 @login_required
 def add_product(request):
-    """Add a product to the store"""
+    """ Add a product to the store """
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only store owners can do that.')
         return redirect(reverse('home'))
@@ -106,13 +140,11 @@ def add_product(request):
             product = form.save()
             messages.success(request, 'Successfully added product!')
             return redirect(reverse('product_detail', args=[product.id]))
-        messages.error(
-            request,
-            'Failed to add product. Please ensure the form is valid.'
-        )
+        else:
+            messages.error(request, 'Failed to add product. Please ensure the form is valid.')
     else:
         form = ProductForm()
-
+        
     template = 'products/add_product.html'
     context = {
         'form': form,
@@ -123,7 +155,7 @@ def add_product(request):
 
 @login_required
 def edit_product(request, product_id):
-    """Edit a product in the store"""
+    """ Edit a product in the store """
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only store owners can do that.')
         return redirect(reverse('home'))
@@ -137,25 +169,19 @@ def edit_product(request, product_id):
             size = form.cleaned_data.get('size')
             color = form.cleaned_data.get('color')
             if size and color:
-                # Update or create ProductVariant
-                product_variant, created = (
-                    ProductVariant.objects.update_or_create(
-                        product=product,
-                        defaults={'size': size, 'color': color}
-                    )
+                # Update existing ProductVariant or create new one
+                product_variant, created = ProductVariant.objects.update_or_create(
+                    product=product,
+                    defaults={'size': size, 'color': color}
                 )
             else:
-                # Remove existing variants if no size/color
-                ProductVariant.objects.filter(
-                    product=product
-                ).delete()
-
+                # If size and color are not provided, delete existing ProductVariant if it exists
+                ProductVariant.objects.filter(product=product).delete()
+            
             messages.success(request, 'Successfully updated product!')
             return redirect(reverse('product_detail', args=[product.id]))
-        messages.error(
-            request,
-            'Failed to update product. Please ensure the form is valid.'
-        )
+        else:
+            messages.error(request, 'Failed to update product. Please ensure the form is valid.')
     else:
         form = ProductForm(instance=product)
         messages.info(request, f'You are editing {product.name}')
@@ -171,7 +197,7 @@ def edit_product(request, product_id):
 
 @login_required
 def delete_product(request, product_id):
-    """Delete a product from the store"""
+    """ Delete a product from the store """
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only store owners can do that.')
         return redirect(reverse('home'))
