@@ -64,7 +64,7 @@ INSTALLED_APPS = [
     "blog",
     "checkout",
     "profiles",
-    #"newsletter",
+    "newsletter",
     # Other
     "crispy_forms",
     "storages",
@@ -112,6 +112,12 @@ TEMPLATES = [
             ],
         },
     },
+    {
+        'CONTEXT_PROCESSORS': [
+            # Required for canonical URLs
+            'django.template.context_processors.request',
+        ],
+    }
 ]
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
@@ -128,7 +134,7 @@ SITE_ID = 1
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
 
 # Remove before submission
-EMAILSERVICE = 2
+EMAILSERVICE = 3
 
 # Start with Console Backend for development
 # Move to File-Based Backend when you need to inspect actual email content
