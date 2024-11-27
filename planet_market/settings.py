@@ -79,6 +79,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    #"allauth.account.middleware.AccountMiddleware"
 ]
 
 ROOT_URLCONF = "planet_market.urls"
@@ -111,12 +112,6 @@ TEMPLATES = [
                 "crispy_forms.templatetags.crispy_forms_field",
             ],
         },
-    },
-    {
-        'CONTEXT_PROCESSORS': [
-            # Required for canonical URLs
-            'django.template.context_processors.request',
-        ],
     }
 ]
 
@@ -165,6 +160,11 @@ elif EMAILSERVICE == 3:
     EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
     EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
     DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Mailchimp Settings
+MAILCHIMP_API_KEY = os.environ.get('MAILCHIMP_API_KEY')
+MAILCHIMP_REGION = os.environ.get('MAILCHIMP_REGION')
+MAILCHIMP_LIST_ID = os.environ.get('MAILCHIMP_LIST_ID')
 
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 ACCOUNT_EMAIL_REQUIRED = True
