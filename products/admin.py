@@ -11,12 +11,15 @@ class ProductAdmin(admin.ModelAdmin):
         'image',
     )
     ordering = ('sku',)
+    list_filter = ('category',)
+    search_fields = ('name', 'sku')
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = (
         'friendly_name',
         'name',
     )
+    search_fields = ('name', 'friendly_name')
 
 class ReviewAdmin(admin.ModelAdmin):
     list_display = (
@@ -28,10 +31,9 @@ class ReviewAdmin(admin.ModelAdmin):
     search_fields = ('user_name', 'review_text')
     list_filter = ('rating', 'created_at')
 
-class ProductVariantInline(admin.TabularInline):
-    """Inline admin interface for product variants."""
+class ProductVariantInline(admin.TabularInline):  # Or admin.StackedInline for a different layout
     model = ProductVariant
-    extra = 1
+    extra = 1  # Number of extra forms displayed
 
 class ProductAdminWithVariants(admin.ModelAdmin):
     list_display = (
@@ -43,7 +45,9 @@ class ProductAdminWithVariants(admin.ModelAdmin):
         'image',
     )
     ordering = ('sku',)
+    list_filter = ('category',)
     inlines = [ProductVariantInline]
+    search_fields = ('name', 'sku')
 
 # Register your models with the appropriate admin classes
 admin.site.register(Product, ProductAdminWithVariants)
