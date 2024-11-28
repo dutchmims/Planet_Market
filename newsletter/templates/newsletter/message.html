@@ -1,0 +1,35 @@
+{% extends "newsletter/base.html" %}
+
+{% comment %} {% block title %}Subscribe to Newsletter{% endblock %} {% endcomment %}
+
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block newsletter_content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header {% if status == 'success' %}bg-success{% else %}bg-danger{% endif %} text-white">
+                    <h2 class="h4 mb-0">{{ title }}</h2>
+                </div>
+                <div class="card-body">
+                    <div class="alert {% if status == 'success' %}alert-success{% else %}alert-danger{% endif %} mb-4">
+                        <p class="lead mb-0">{{ message }}</p>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <a href="{% url 'subscribe' %}" class="btn btn-primary">
+                            <i class="fas fa-home me-2"></i>Back to Subscribe
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
