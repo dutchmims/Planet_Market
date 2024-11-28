@@ -38,11 +38,11 @@ DEBUG = bool(os.getenv("DEBUG", "False"))
 if DEBUG:
     ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 else:
-    PRODUCTION_HOST_CI = os.getenv("PRODUCTION_HOSTS_CI",
-                                   "8000-dutchmims-planetmarket-bpjhkysy2er.ws.codeinstitute-ide.ne")
-    PRODUCTION_HOSTS_HEROKU = os.getenv("PRODUCTION_HOSTS_HEROKU", "planet-market-ef36a376b17d.herokuapp.com")
+    # PRODUCTION_HOST_CI = os.getenv("PRODUCTION_HOSTS_CI",
+    #                                "8000-dutchmims-planetmarket-bpjhkysy2er.ws.codeinstitute-ide.net")
+    # PRODUCTION_HOSTS_HEROKU = os.getenv("PRODUCTION_HOSTS_HEROKU", "planet-market-ef36a376b17d.herokuapp.com")
 
-    ALLOWED_HOSTS = [PRODUCTION_HOST_CI, PRODUCTION_HOSTS_HEROKU]
+    ALLOWED_HOSTS = ["8000-dutchmims-planetmarket-bpjhkysy2er.ws.codeinstitute-ide.net", "planet-market-ef36a376b17d.herokuapp.com"]
 
 # Application definition
 
