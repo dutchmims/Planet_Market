@@ -38,10 +38,6 @@ DEBUG = False
 if DEBUG:
     ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 else:
-    # PRODUCTION_HOST_CI = os.getenv("PRODUCTION_HOSTS_CI",
-    #                                "8000-dutchmims-planetmarket-bpjhkysy2er.ws.codeinstitute-ide.net")
-    # PRODUCTION_HOSTS_HEROKU = os.getenv("PRODUCTION_HOSTS_HEROKU", "planet-market-ef36a376b17d.herokuapp.com")
-
     ALLOWED_HOSTS = ["8000-dutchmims-planetmarket-bpjhkysy2er.ws.codeinstitute-ide.net", "planet-market-ef36a376b17d.herokuapp.com"]
 
 # Application definition
@@ -70,6 +66,8 @@ INSTALLED_APPS = [
     "crispy_forms",
     "storages",
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -126,7 +124,6 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
-SITE_ID = 1
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
 
 # Remove before submission
