@@ -8,9 +8,8 @@ from django.views.decorators.http import require_http_methods
 from mailchimp_marketing.api_client import ApiClientError # type: ignore
 from .forms import NewsletterForm
 from .models import Subscriber
-from .utils import get_mailchimp_client
+from .utils import get_mailchimp_client, log_message, verify_subscription, generate_email_hash
 import hashlib
-
 
 def mailchimp_ping_view(request):
     response = get_mailchimp_client().ping.get()
@@ -21,33 +20,42 @@ def subscribe(request):
     form = NewsletterForm(request.POST or None)
     if form.is_valid():
         email = form.cleaned_data['email']
-        if email:
-            try:
-                # Create Mailchimp client
-                mailchimp_client = get_mailchimp_client()
-                list_id = settings.MAILCHIMP_LIST_ID
+        try:
+            mailchimp_client = get_mailchimp_client()
+            list_id = settings.MAILCHIMP_LIST_ID
 
-                # Add subscriber to Mailchimp
-                mailchimp_client.lists.add_list_member(list_id, {
-                    "email_address": email,
-                    "status": "subscribed"
-                })
+            # Add subscriber to Mailchimp
+            mailchimp_client.lists.add_list_member(list_id, {
+                "email_address": email,
+                "status": "subscribed"
+            })
 
-                # Create local subscriber record
-                subscriber = Subscriber.objects.create(
-                    email=email,
-                    email_hash=hashlib.md5(email.encode()).hexdigest(),
-                    is_active=True
-                )
-                subscriber.save()
+            # Create local subscriber record
+            subscriber = Subscriber.objects.create(
+                email=email,
+                email_hash=hashlib.md5(email.encode()).hexdigest(),
+                is_active=True
+            )
+            subscriber.save()
+            log_message(f"Successfully subscribed {email} to {list_id}", "INFO")
+            return redirect('subscribe_success')
 
-                return redirect('subscribe_success')
+        except ApiClientError as error:
+            error_msg = str(error.text) if hasattr(error, 'text') else str(error)
 
-            except ApiClientError as error:
+            if "Resource Not Found" in error_msg:
+                log_message(f"Invalid list ID: {list_id}", "ERROR", error)
+                raise ApiClientError("Invalid list ID")
+            elif "Member Exists" in error_msg:
+                log_message(f"Member already exists: {email}", "WARNING", error)
+                raise ApiClientError("Member already subscribed")
+            elif "Invalid Resource" in error_msg:
+                log_message(f"Invalid email format: {email}", "ERROR", error)
+                raise ApiClientError("Invalid email format")
+            else:
+                log_message(f"Subscription error for {email}", "ERROR", error)
 
-                return redirect('subscribe_fail')
-        else:
-            messages.error(request, 'Please provide a valid email address.')
+            return redirect('subscribe_fail')
 
     return render(request, 'newsletter/subscribe.html', {'form': form})
 
@@ -57,41 +65,28 @@ def unsubscribe_form(request):
         email = request.POST.get('email')
         if email:
             try:
-                # Try to find subscriber
-                subscriber = Subscriber.objects.filter(email=email).first()
-                
-                if not subscriber:
-                    messages.error(request, 'This email address is not subscribed to our newsletter.')
-                    return render(request, 'newsletter/unsubscribe_form.html')
+                # Find subscriber
+                subscriber = get_object_or_404(Subscriber, email=email)
 
                 # Update Mailchimp
                 client = get_mailchimp_client()
-                try:
-                    client.lists.update_list_member(
-                        settings.MAILCHIMP_LIST_ID,
-                        subscriber.email_hash,
-                        {"status": "unsubscribed"}
-                    )
-                except ApiClientError:
-                    # If the email doesn't exist in Mailchimp, just update our local record
-                    pass
+                client.lists.update_list_member(
+                    settings.MAILCHIMP_LIST_ID,
+                    subscriber.email_hash,
+                    {"status": "unsubscribed"}
+                )
 
                 # Update local record
                 subscriber.is_active = False
                 subscriber.save()
 
                 return redirect('unsubscribe_success')
-
-            except Exception as e:
-                messages.error(request, 'An error occurred while processing your request. Please try again later.')
+            except ApiClientError:
                 return redirect('unsubscribe_fail')
-
         else:
             messages.error(request, 'Please provide a valid email address.')
 
     return render(request, 'newsletter/unsubscribe_form.html')
-
-# ---
 
 def subscribe_success(request):
     """Handle successful subscription."""

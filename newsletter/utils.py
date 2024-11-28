@@ -12,6 +12,8 @@ LOG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'logs')
 os.makedirs(LOG_DIR, exist_ok=True)
 LOG_FILE = os.path.join(LOG_DIR, f'newsletter_{datetime.now().strftime("%Y%m%d")}.log')
 
+
+
 def log_message(message, level="INFO", error=None):
     """Log a message with timestamp."""
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -24,12 +26,6 @@ def log_message(message, level="INFO", error=None):
 
 def get_mailchimp_client():
     """Get configured Mailchimp client with error handling.
-
-    Returns:
-        MailchimpMarketing.Client: Configured Mailchimp client
-
-    Raises:
-        ApiClientError: If client configuration fails
     """
 
     try:
@@ -41,8 +37,6 @@ def get_mailchimp_client():
 
         # Verify credentials with a ping
         client.ping.get()
-        log_message("Mailchimp client configured successfully", "INFO")
-        log_message("Mailchimp pinged", "INFO")
         return client
 
     except ApiClientError as error:
