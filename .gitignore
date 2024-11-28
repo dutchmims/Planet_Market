@@ -102,7 +102,6 @@ tests/**
 index/*
 Planet_Market-main/test_screenshots/
 
-**/**/migrations
 Notes/
 PP5/
 env.py
