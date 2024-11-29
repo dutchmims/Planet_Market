@@ -18,12 +18,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap, index
-from .sitemap import StaticViewSitemap, BlogSitemap, ProductSitemap
+from .sitemap import StaticViewSitemap, ProductSitemap
 from home.views import custom_page_not_found_view
 
 sitemaps = {
     'static': StaticViewSitemap,
-    'blog': BlogSitemap,
     'products': ProductSitemap
 }
 
@@ -37,7 +36,6 @@ urlpatterns = [
     path('bag/', include('bag.urls')),
     path('checkout/', include('checkout.urls')),
     path('profile/', include('profiles.urls')),
-    path('blog/', include('blog.urls')),  # Add this line to include blog URLs
     path('newsletter/', include('newsletter.urls')),  # Add newsletter URLs
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
