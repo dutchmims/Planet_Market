@@ -33,7 +33,7 @@ if env_path.exists():
 SECRET_KEY = os.getenv("SECRET_KEY", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 if DEBUG:
     ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
@@ -58,7 +58,6 @@ INSTALLED_APPS = [
     "home",
     "products",
     "bag",
-    "blog",
     "checkout",
     "profiles",
     "newsletter",
@@ -78,7 +77,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    #"allauth.account.middleware.AccountMiddleware"
 ]
 
 ROOT_URLCONF = "planet_market.urls"
