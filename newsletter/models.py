@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
-import hashlib
+from .utils import generate_email_hash
+
 
 class Subscriber(models.Model):
     """Newsletter subscriber model."""
@@ -25,11 +26,11 @@ class Subscriber(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        """Save the subscriber, converting email to lowercase and generating hash."""
+        """Save the subscriber, converting email to lowercase and
+        generating hash.
+        """
         self.email = self.email.lower()
         if not self.email_hash:
-            # Use the same hash generation as in utils.py
-            from .utils import generate_email_hash
             self.email_hash = generate_email_hash(self.email)
         super().save(*args, **kwargs)
 
