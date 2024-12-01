@@ -22,17 +22,27 @@ SECRET_KEY = os.getenv("SECRET_KEY", "")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+if DEBUG:
 # Always include local development hosts
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+else:
+    ALLOWED_HOSTS = [
+        "8000-dutchmims-planetmarket-bpjhkysy2er.ws.codeinstitute-ide.net",
+        "planet-market-ef36a376b17d.herokuapp.com",
+    ]
 
 # Add production hosts if they exist
-PRODUCTION_HOST_CI = os.getenv("PRODUCTION_HOSTS_CI", "")
-PRODUCTION_HOSTS_HEROKU = os.getenv("PRODUCTION_HOSTS_HEROKU", "")
+PRODUCTION_HOST_CI = os.getenv(
+    "PRODUCTION_HOSTS_CI",
+    "8000-dutchmims-planetmarket-bpjhkysy2er.ws.codeinstitute-ide.net")
+PRODUCTION_HOSTS_HEROKU = os.getenv(
+    "PRODUCTION_HOSTS_HEROKU",
+    "planet-market-ef36a376b17d.herokuapp.com")
 
-if PRODUCTION_HOST_CI:
-    ALLOWED_HOSTS.append(PRODUCTION_HOST_CI)
-if PRODUCTION_HOSTS_HEROKU:
-    ALLOWED_HOSTS.append(PRODUCTION_HOSTS_HEROKU)
+# if PRODUCTION_HOST_CI:
+#    ALLOWED_HOSTS.append(PRODUCTION_HOST_CI)
+# if PRODUCTION_HOSTS_HEROKU:
+#    ALLOWED_HOSTS.append(PRODUCTION_HOSTS_HEROKU)
 
 # Application definition
 
