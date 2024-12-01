@@ -15,48 +15,116 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Category',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=254)),
-                ('friendly_name', models.CharField(blank=True, max_length=254, null=True)),
+                ('id', models.BigAutoField(
+                    auto_created=True,
+                    primary_key=True,
+                    serialize=False,
+                    verbose_name='ID'
+                )),
+                ('name', models.CharField(
+                    max_length=254)),
+                ('friendly_name',
+                    models.CharField(
+                    blank=True,
+                    max_length=254,
+                    null=True)),
             ],
             options={
-                'verbose_name_plural': 'Categories',
+                'verbose_name_plural':
+                    'Categories',
             },
         ),
         migrations.CreateModel(
             name='Product',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('sku', models.CharField(blank=True, max_length=254, null=True)),
-                ('name', models.CharField(max_length=254)),
+                ('id', models.BigAutoField(
+                    auto_created=True,
+                    primary_key=True,
+                    serialize=False,
+                    verbose_name='ID'
+                )),
+                ('sku', models.CharField(
+                    blank=True,
+                    max_length=254,
+                    null=True)),
+                ('name', models.CharField(
+                    max_length=254)),
                 ('description', models.TextField()),
-                ('price', models.DecimalField(decimal_places=2, max_digits=6)),
-                ('rating', models.DecimalField(blank=True, decimal_places=2, max_digits=6, null=True)),
-                ('image_url', models.URLField(blank=True, max_length=1024, null=True)),
-                ('image', models.ImageField(blank=True, null=True, upload_to='')),
-                ('category', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='products.category')),
+                ('price', models.DecimalField(
+                    decimal_places=2,
+                    max_digits=6)),
+                ('rating', models.DecimalField(
+                    blank=True,
+                    decimal_places=2,
+                    max_digits=6,
+                    null=True
+                )),
+                ('image_url', models.URLField(
+                    blank=True,
+                    max_length=1024,
+                    null=True)),
+                ('image', models.ImageField(
+                    blank=True,
+                    null=True,
+                    upload_to=''
+                )),
+                ('category', models.ForeignKey(
+                    blank=True,
+                    null=True,
+                    on_delete=django.db.models.
+                        deletion.SET_NULL,
+                    to='products.category'
+                )),
             ],
         ),
         migrations.CreateModel(
             name='Review',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('user_name', models.CharField(max_length=254)),
-                ('review_text', models.TextField()),
-                ('rating', models.PositiveIntegerField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reviews', to='products.product')),
+                ('id', models.BigAutoField(
+                    auto_created=True,
+                    primary_key=True,
+                    serialize=False,
+                    verbose_name='ID'
+                )),
+                ('user_name', models.CharField(
+                    max_length=254)),
+                ('review_text',
+                    models.TextField()),
+                ('rating',
+                    models.PositiveIntegerField()),
+                ('created_at',
+                    models.DateTimeField(
+                    auto_now_add=True)),
+                ('updated_at',
+                    models.DateTimeField(
+                        auto_now=True)),
+                ('product', models.ForeignKey(
+                    on_delete=django.db.models.
+                        deletion.CASCADE,
+                        related_name='reviews',
+                        to='products.product')),
             ],
         ),
         migrations.CreateModel(
             name='ProductVariant',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('sku', models.CharField(max_length=254)),
-                ('size', models.CharField(max_length=50)),
-                ('color', models.CharField(max_length=50)),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='variants', to='products.product')),
+                ('id', models.BigAutoField(
+                    auto_created=True,
+                    primary_key=True,
+                    serialize=False,
+                    verbose_name='ID'
+                )),
+                ('sku', models.CharField(
+                    max_length=254)),
+                ('size', models.CharField(
+                    max_length=50)),
+                ('color', models.CharField(
+                    max_length=50)),
+                ('product', models.ForeignKey(
+                    on_delete=django.db.models.
+                        deletion.CASCADE,
+                    related_name='variants',
+                    to='products.product')),
             ],
         ),
     ]
