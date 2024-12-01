@@ -1,30 +1,33 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+"""Views for managing products in the store."""
+
+# Django imports
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.db.models.functions import Lower
-from .models import Product, Category, Review, ProductVariant
-from .forms import ProductForm, ReviewForm
-from django.db import models
-import os
-from django.conf import settings
+from django.shortcuts import (
+    get_object_or_404,
+    redirect,
+    render,
+)
+from django.urls import reverse
 
-def get_product_image_url(product):
-    """Helper function to get product image URL with fallback"""
-    if product.image:
-        try:
-            # Check if file exists
-            image_path = os.path.join(settings.MEDIA_ROOT, str(product.image))
-            if os.path.isfile(image_path):
-                return product.image.url
-        except Exception:
-            pass
-    return os.path.join(settings.MEDIA_URL, 'noimage.png')
+# Local imports
+from planet_market.utils import is_staff_member
+from .forms import (
+    ProductForm,
+    ReviewForm,
+)
+from .models import (
+    Product,
+    ProductVariant,
+    Review,
+)
+
 
 def all_products(request):
-    """ A view to show all products, including sorting and search queries """
-
+    """A view to show all products, including
+    sorting and search queries"""
     products = Product.objects.all()
     query = None
     categories = None
@@ -37,7 +40,8 @@ def all_products(request):
             sort = sortkey
             if sortkey == 'name':
                 sortkey = 'lower_name'
-                products = products.annotate(lower_name=Lower('name'))
+                products = products.annotate(
+                    lower_name=Lower('name'))
             if sortkey == 'category':
                 sortkey = 'category__name'
             if 'direction' in request.GET:
@@ -45,26 +49,28 @@ def all_products(request):
                 if direction == 'desc':
                     sortkey = f'-{sortkey}'
             products = products.order_by(sortkey)
-            
+
         if 'category' in request.GET:
-            categories = request.GET['category'].split(',')
-            products = products.filter(category__name__in=categories)
-            categories = Category.objects.filter(name__in=categories)
+            categories = request.GET['category'].\
+                split(',')
+            products = products.filter(
+                category__name__in=categories)
 
         if 'q' in request.GET:
             query = request.GET['q']
             if not query:
-                messages.error(request, "You didn't enter any search criteria!")
+                messages.error(
+                    request,
+                    "You didn't enter any search criteria!"
+                )
                 return redirect(reverse('products'))
-            
-            queries = Q(name__icontains=query) | Q(description__icontains=query)
+
+            queries = Q(name__icontains=query) |\
+                Q(description__icontains=query)
             products = products.filter(queries)
 
-    # Process image URLs for all products
-    for product in products:
-        product.safe_image_url = get_product_image_url(product)
-
-    current_sorting = f'{sort}_{direction}'
+    current_sorting = f'{sort}_{direction}' if sort and\
+        direction else None
 
     context = {
         'products': products,
@@ -73,78 +79,76 @@ def all_products(request):
         'current_sorting': current_sorting,
     }
 
-    return render(request, 'products/products.html', context)
+    return render(request,
+                  'products/products.html',
+                  context)
 
 
 def product_detail(request, product_id):
-    """ A view to show individual product details and handle reviews """
+    """A view to show individual product details"""
+    product = get_object_or_404(Product,
+                                pk=product_id)
+    reviews = Review.objects.filter(
+        product=product)
+    review_form = ReviewForm()
 
-    product = get_object_or_404(Product, pk=product_id)
-    # Add safe image URL
-    product.safe_image_url = get_product_image_url(product)
-    
-    reviews = product.reviews.all().order_by('-created_at')
-    has_sizes = product.variants.exists()
-    form = ReviewForm()
-
-    if request.method == 'POST':
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            review = form.save(commit=False)
+    if request.method == 'POST' and \
+        request.user.is_authenticated:
+        review_form = ReviewForm(request.POST)
+        if review_form.is_valid():
+            review = review_form.save(
+                commit=False)
             review.product = product
-            
-            # Additional validation
-            rating = form.cleaned_data.get('rating')
-            if rating is not None and (rating < 1.0 or rating > 5.0):
-                messages.error(request, 'Rating must be between 1.0 and 5.0')
-                return redirect(reverse('product_detail', args=[product.id]))
-            
-            try:
-                review.save()
-                
-                # Update product rating
-                avg_rating = product.reviews.aggregate(models.Avg('rating'))['rating__avg']
-                if avg_rating:
-                    product.rating = round(avg_rating, 1)
-                    product.save(update_fields=['rating'])
-                
-                messages.success(request, 'Thank you! Your review has been submitted successfully.')
-                return redirect(reverse('product_detail', args=[product.id]))
-            except Exception as e:
-                messages.error(request, f'Error saving review: {str(e)}')
-        else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f'{field}: {error}')
-
+            review.user = request.user
+            review.save()
+            messages.success(request,
+                             'Successfully added review!')
+            return redirect(
+                reverse(
+                    'product_detail',
+                    args=[product.id]))
+        messages.error(
+            request,
+            'Failed to add review. Please ensure the '
+            + 'form is valid.'
+        )
     context = {
         'product': product,
         'reviews': reviews,
-        'form': form,
-        'has_sizes': has_sizes,
+        'form': review_form,
     }
 
-    return render(request, 'products/product_detail.html', context)
+    return render(request,
+                  'products/product_detail.html',
+                  context)
 
 
 @login_required
 def add_product(request):
-    """ Add a product to the store """
-    if not request.user.is_superuser:
-        messages.error(request, 'Sorry, only store owners can do that.')
+    """Add a product to the store"""
+    if not is_staff_member(request.user):
+        messages.error(
+            request,
+            'Sorry, only staff members can do that.'
+        )
         return redirect(reverse('home'))
 
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save()
-            messages.success(request, 'Successfully added product!')
-            return redirect(reverse('product_detail', args=[product.id]))
-        else:
-            messages.error(request, 'Failed to add product. Please ensure the form is valid.')
+            messages.success(request,
+                             'Successfully added product!')
+            return redirect(reverse('product_detail',
+                                    args=[product.id]))
+        messages.error(
+            request,
+            'Failed to add product. Please ensure the '
+            + 'form is valid.'
+        )
     else:
         form = ProductForm()
-        
+
     template = 'products/add_product.html'
     context = {
         'form': form,
@@ -155,36 +159,46 @@ def add_product(request):
 
 @login_required
 def edit_product(request, product_id):
-    """ Edit a product in the store """
-    if not request.user.is_superuser:
-        messages.error(request, 'Sorry, only store owners can do that.')
+    """Edit a product in the store"""
+    if not is_staff_member(request.user):
+        messages.error(
+            request,
+            'Sorry, only staff members can do that.'
+        )
         return redirect(reverse('home'))
 
     product = get_object_or_404(Product, pk=product_id)
     if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES, instance=product)
+        form = ProductForm(request.POST, request.FILES,
+                           instance=product)
         if form.is_valid():
-            form.save()
-            # Handle ProductVariant update or deletion if needed
-            size = form.cleaned_data.get('size')
-            color = form.cleaned_data.get('color')
-            if size and color:
-                # Update existing ProductVariant or create new one
-                product_variant, created = ProductVariant.objects.update_or_create(
-                    product=product,
-                    defaults={'size': size, 'color': color}
-                )
-            else:
-                # If size and color are not provided, delete existing ProductVariant if it exists
-                ProductVariant.objects.filter(product=product).delete()
-            
-            messages.success(request, 'Successfully updated product!')
-            return redirect(reverse('product_detail', args=[product.id]))
-        else:
-            messages.error(request, 'Failed to update product. Please ensure the form is valid.')
+            product = form.save()
+
+            # Handle variant data
+            variant = product.variants.first()
+            if not variant:
+                variant = ProductVariant(product=product)
+
+            variant.size = request.POST.get('size', '')
+            variant.color = request.POST.get('color', '')
+            variant.sku = f"{product.sku}" \
+                        f"-{variant.size}-{variant.color}" \
+                        if product.sku else ""
+            variant.save()
+
+            messages.success(request,
+                            'Successfully updated product!')
+            return redirect(reverse(
+                'product_detail', args=[product.id]))
+        messages.error(
+            request,
+            'Failed to update product. Please ensure the'
+            + ' form is valid.'
+        )
     else:
         form = ProductForm(instance=product)
-        messages.info(request, f'You are editing {product.name}')
+        messages.info(request,
+                    f'You are editing {product.name}')
 
     template = 'products/edit_product.html'
     context = {
@@ -197,12 +211,35 @@ def edit_product(request, product_id):
 
 @login_required
 def delete_product(request, product_id):
-    """ Delete a product from the store """
-    if not request.user.is_superuser:
-        messages.error(request, 'Sorry, only store owners can do that.')
+    """Delete a product from the store"""
+    if not is_staff_member(request.user):
+        messages.error(
+            request,
+            'Sorry, only staff members can do that.'
+        )
         return redirect(reverse('home'))
 
     product = get_object_or_404(Product, pk=product_id)
     product.delete()
     messages.success(request, 'Product deleted!')
     return redirect(reverse('products'))
+
+
+@login_required
+def manage_products(request):
+    """A view to manage products - for staff only"""
+    if not is_staff_member(request.user):
+        messages.error(
+            request,
+            'Sorry, only staff members can do that.'
+        )
+        return redirect(reverse('home'))
+
+    products = Product.objects.all().order_by('name')
+
+    template = 'products/manage_products.html'
+    context = {
+        'products': products,
+    }
+
+    return render(request, template, context)

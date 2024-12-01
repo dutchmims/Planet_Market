@@ -1,17 +1,36 @@
+"""Product forms."""
+
 from django import forms
-from .widgets import CustomClearableFileInput
-from .models import Product, Category, Review, ProductVariant
+
+from .models import (
+    Category,
+    Product,
+    ProductVariant,
+    Review,
+)
+from .widgets import CustomClearableFileInput  # type: ignore
 
 
 class ProductForm(forms.ModelForm):
-    size = forms.CharField(max_length=50, required=False)  # Optional field for size
-    color = forms.CharField(max_length=50, required=False)  # Optional field for color
+    """Form for product management."""
+    size = forms.CharField(
+        max_length=50,
+        required=False
+    )
+    color = forms.CharField(
+        max_length=50,
+        required=False
+    )
 
     class Meta:
         model = Product
         fields = '__all__'
 
-    image = forms.ImageField(label='Image', required=False, widget=CustomClearableFileInput)
+    image = forms.ImageField(
+        label='Image',
+        required=False,
+        widget=CustomClearableFileInput
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -19,7 +38,7 @@ class ProductForm(forms.ModelForm):
         friendly_names = [(c.id, c.get_friendly_name()) for c in categories]
 
         self.fields['category'].choices = friendly_names
-        for field_name, field in self.fields.items():
+        for _field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'border-black rounded-0'
 
     def save(self, commit=True):
@@ -30,11 +49,16 @@ class ProductForm(forms.ModelForm):
             size = self.cleaned_data.get('size')
             color = self.cleaned_data.get('color')
             if size and color:
-                ProductVariant.objects.create(product=product, size=size, color=color)
+                ProductVariant.objects.create(
+                    product=product,
+                    size=size,
+                    color=color
+                )
         return product
 
 
 class ReviewForm(forms.ModelForm):
+    """Form for review management."""
     rating = forms.DecimalField(
         min_value=1.0,
         max_value=5.0,
@@ -49,12 +73,8 @@ class ReviewForm(forms.ModelForm):
 
     class Meta:
         model = Review
-        fields = ['user_name', 'review_text', 'rating']
+        fields = ['review_text', 'rating']
         widgets = {
-            'user_name': forms.TextInput(attrs={
-                'class': 'form-control border-black rounded-0',
-                'placeholder': 'Your Name'
-            }),
             'review_text': forms.Textarea(attrs={
                 'class': 'form-control border-black rounded-0',
                 'placeholder': 'Write your review here...',
@@ -71,6 +91,11 @@ class ReviewForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
+        for _field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control border-black rounded-0'
-            field.error_messages = {'required': f'{field_name.replace("_", " ").title()} is required'}
+            field.error_messages = {
+                'required':
+                    f'''
+                    {_field_name.replace("_", " ").title()}
+                    is required'''
+            }
