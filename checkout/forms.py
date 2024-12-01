@@ -2,23 +2,34 @@ from django import forms
 from django.core.validators import RegexValidator
 from .models import Order, DiscountCode
 from django_countries.fields import CountryField
+import re
+from django.contrib import messages
 
 # Define validators with messages
 phone_regex = RegexValidator(
     regex=r'^\+?1?\d{9,17}$',
-    message="Please enter a valid phone number (e.g., +44123456789 or 07123456789)"
+    message=(
+        "Please enter a valid phone number "
+        "(e.g., +44123456789 or 07123456789)"
+    )
 )
 
 # Combined regex for UK, Ireland, and US postcodes
 postal_code_regex = RegexValidator(
-    regex=r'^(([A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2})|([A-Z]{1,2}[0-9]{1,2})|([0-9]{5}(-[0-9]{4})?)|([A-Z][0-9]{1,2}|[A-Z]{2}[0-9]{1,2}|[A-Z][0-9][A-Z]|[A-Z]{2}[0-9][A-Z]))$',
+    regex=(
+        r'^(([A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2})|'
+        r'([A-Z]{1,2}[0-9]{1,2})|'
+        r'([0-9]{5}(-[0-9]{4})?)|'
+        r'([A-Z][0-9]{2}\s[A-Z0-9]{4}))$'
+    ),
     message=(
         "Please enter a valid postal code:\n"
         "• UK: e.g., SW1A 1AA or M1 1AA\n"
-        "• Ireland: e.g., D02 AF30 or A65 F4E2\n"
+        "• Ireland (Eircode): e.g., D02 AF30 (must include space)\n"
         "• US: e.g., 90210 or 90210-1234"
     )
 )
+
 
 class OrderForm(forms.ModelForm):
     full_name = forms.CharField(
@@ -76,7 +87,7 @@ class OrderForm(forms.ModelForm):
         help_text=(
             "Enter a postal code in one of these formats:\n"
             "• UK: SW1A 1AA or M1 1AA\n"
-            "• Ireland: D02 AF30 or A65 F4E2\n"
+            "• Ireland (Eircode): D02 AF30 (must include space)\n"
             "• US: 90210 or 90210-1234"
         ),
         error_messages={
@@ -85,7 +96,7 @@ class OrderForm(forms.ModelForm):
             'invalid': (
                 "Invalid postal code format. Please use:\n"
                 "• UK: SW1A 1AA or M1 1AA\n"
-                "• Ireland: D02 AF30 or A65 F4E2\n"
+                "• Ireland (Eircode): D02 AF30 (must include space)\n"
                 "• US: 90210 or 90210-1234"
             )
         }
@@ -96,6 +107,13 @@ class OrderForm(forms.ModelForm):
             'required': 'Please select your country'
         }
     )
+    discount_code = forms.CharField(
+        required=False,
+        max_length=15,
+        error_messages={
+            'max_length': 'Discounts code cannot exceed 15 characters'
+        }
+    )
 
     class Meta:
         model = Order
@@ -103,7 +121,7 @@ class OrderForm(forms.ModelForm):
             'full_name', 'email', 'phone_number',
             'street_address1', 'street_address2',
             'town_or_city', 'county', 'postcode',
-            'country',
+            'country', 'discount_code'
         )
 
     def clean_phone_number(self):
@@ -121,28 +139,54 @@ class OrderForm(forms.ModelForm):
         postal_code = self.cleaned_data.get('postcode', '').upper()
         if not postal_code:
             return postal_code
-            
+
         # Additional validation to provide more specific error messages
         uk_pattern = r'^[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}$'
-        ireland_pattern = r'^([A-Z]{1,2}[0-9]{1,2}|[A-Z]{2}[0-9]{1,2}|[A-Z][0-9][A-Z]|[A-Z]{2}[0-9][A-Z])$'
+        # Eircode format:
+        # Letter + 2 digits + space + 4 alphanumeric
+        ireland_pattern = r'^[A-Z][0-9]{2}\s[A-Z0-9]{4}$'
         us_pattern = r'^[0-9]{5}(-[0-9]{4})?$'
 
-        import re
         if not (re.match(uk_pattern, postal_code) or
                 re.match(ireland_pattern, postal_code) or
                 re.match(us_pattern, postal_code)):
             raise forms.ValidationError(
                 "Invalid postal code. Please use one of these formats:\n"
                 "• UK: SW1A 1AA or M1 1AA\n"
-                "• Ireland: D02 AF30 or A65 F4E2\n"
+                "• Ireland (Eircode): D02 AF30 (must include space)\n"
                 "• US: 90210 or 90210-1234",
                 code='invalid_postal'
             )
         return postal_code
 
+    def clean_discount_code(self):
+        code = self.cleaned_data.get('discount_code')
+        if not code:  # If no code provided, that's fine
+            return code
+
+        code = code.strip().upper()  # Normalize the code
+        try:
+            discount = DiscountCode.objects.get(code=code)
+            if not discount.active:
+                messages.error(
+                    self.request,
+                    'This discount code has expired'
+                )
+                raise forms.ValidationError(
+                    'This discount code has expired'
+                ) from None
+            return code
+        except DiscountCode.DoesNotExist as err:
+            messages.error(
+                self.request,
+                'This discount code is invalid. Try again'
+            )
+            raise forms.ValidationError(
+                'Invalid discount code. Please check and try again'
+            ) from err
+
     def __init__(self, *args, **kwargs):
-        """
-        Add placeholders and classes, remove auto-generated
+        """Add placeholders and classes, remove auto-generated
         labels and set autofocus on first field
         """
         super().__init__(*args, **kwargs)
@@ -150,11 +194,12 @@ class OrderForm(forms.ModelForm):
             'full_name': 'Full Name',
             'email': 'Email Address',
             'phone_number': 'Phone Number',
+            'postcode': 'Postal Code',
+            'town_or_city': 'Town or City',
             'street_address1': 'Street Address 1',
             'street_address2': 'Street Address 2',
-            'town_or_city': 'Town or City',
             'county': 'County, State or Locality',
-            'postcode': 'Postal Code',
+            'discount_code': 'Discount Code (Optional)'
         }
 
         self.fields['full_name'].widget.attrs['autofocus'] = True

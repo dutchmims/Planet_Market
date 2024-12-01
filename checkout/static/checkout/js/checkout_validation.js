@@ -30,11 +30,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const postal = e.target.value.toUpperCase();
             // Regex patterns for different postal code formats
             const ukPattern = /^[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}$/;  // UK: SW1A 1AA
-            const irelandPattern = /^([A-Z]{1,2}[0-9]{1,2}|[A-Z]{2}[0-9]{1,2}|[A-Z][0-9][A-Z]|[A-Z]{2}[0-9][A-Z])$/;  // Ireland: D02 AF30
+            const irelandPattern = /^[A-Z][0-9]{2}\s[A-Z0-9]{4}$/;  // Ireland Eircode: D02 AF30 (requires space)
             const usPattern = /^[0-9]{5}(-[0-9]{4})?$/;  // US: 12345 or 12345-6789
 
             if (!ukPattern.test(postal) && !irelandPattern.test(postal) && !usPattern.test(postal)) {
-                postalInput.setCustomValidity('Please enter a valid postal code for UK (e.g., SW1A 1AA), Ireland (e.g., D02 AF30), or US (e.g., 90210-1234)');
+                postalInput.setCustomValidity('Please enter a valid postal code:\n' +
+                    '• UK: e.g., SW1A 1AA\n' +
+                    '• Ireland (Eircode): e.g., D02 AF30 (must include space)\n' +
+                    '• US: e.g., 90210 or 90210-1234');
             } else {
                 postalInput.setCustomValidity('');
             }
