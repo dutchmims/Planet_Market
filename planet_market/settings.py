@@ -19,6 +19,7 @@ if env_path.exists():
 SECRET_KEY = os.getenv("SECRET_KEY", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# FIX DEBUG IS FALSE
 DEBUG = False
 
 if DEBUG:
