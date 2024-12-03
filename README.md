@@ -348,9 +348,11 @@ These are rough ideas of a plan.
 
 - Bag
 
-![Checkout](screenshots/Checkout-html.png)
-
+![Checkout](screenshots/Checkout-top-html.png)
+![Checkout](screenshots/Checkout-bottom-html.png)
 - Checkout
+   - With Phone and Postcode help text
+   - With a discount input and sub total
 
 ![Products](screenshots/Products-html.png)
 
@@ -374,29 +376,31 @@ These are rough ideas of a plan.
   - This is new since last review, however it helped me fix a bug & feature in editing and deleting products in one view
   - It helps the business owner review his inventory and make changes.
 
-![Register](screenshots/register.png)
+![Register](screenshots/Register-html.png)
 
 - Register
 
-![Login](screenshots/login.png)
+![Login](screenshots/Login-html.png)
 
 - Login
 
-![Profile](screenshots/profile.png)
+![Profile](screenshots/Profile-html.png)
 
 - Profile
 
-![Subscribe](screenshots/Newsletter.png)
+![Subscribe](screenshots/Subscribe-html.png)
 
-- Newsletter Subscribe
+- Newsletter Subscribe with lint to unsubscribe form.
+- Footer with newsletter subscription form and follow us social media links
 
-![Unsubscribe](screenshots/Newsletter.png)
+![Unsubscribe](screenshots/UnSubscribe-html.png)
 
 - Newsletter Unsubcribe
-
-![Footer](screenshots/Footer.png)
-
 - Footer with newsletter subscription form and follow us social media links
+
+![Review-Footer](screenshots/Review-Footer-html.png)
+- Reviews with view of Footer
+   - Now the review is 1 to 5, with increment of 0.5.
 
 ### Fonts used
 
@@ -747,6 +751,16 @@ I had no issues using it on any browser or any device.
 | DISC-001  | Discounts      | Apply Discount Code | 1. Add items to bag<br>2. Enter discount code<br>3. Apply code<br>4. Check total                                                | - Discount applied correctly<br>- Total updated<br>- Success message shown                      | Test invalid codes             |
 | DISC-002  | Discounts      | Discount Validation | 1. Test expired codes<br>2. Test usage limits<br>3. Test minimum spend<br>4. Test product restrictions                          | - Appropriate error messages<br>- No invalid discounts applied<br>- Clear user feedback         | Test multiple codes            |
 
+### Setting Up Groups
+
+After a tip, I used Heroku Hero extension and a heroku API, to remote access the heroku remote. This allowed me to help fix a few bugs I had with databases (digits lengths bugs). And I used this along with the heroku cli commands.
+
+For user permissions, I created a setup_groups management command to create groups and assign permissions to them.
+-
+![](screenshots/setup_groups.png)
+
+- These set up certain limits and I struggled to understand permissions until I found that I could edit these in the admin panel under groups and per user. Very handy!.
+
 ## Bugs
 
 - I had lots of bugs while writing this project.
@@ -754,9 +768,13 @@ I had no issues using it on any browser or any device.
 - This was resolved after using several sources, including youtube tutorials, codemy.com, w3schools.com and perplexity.
 - I also found, after being refereed to, to install [Windsurf - https://codeium.com/windsurf](https://codeium.com/windsurf) on my macbook, and to use the integrated Claude3 LLM Ai model for coding in chatmode. Claude is like ChatGPt and I was told it is very good for coding, which I found it helped me a lot and made coding easier.
 
-## Known Issues
+1. One bg I did fix, was [broken images in django and missing images](https://github.com/dutchmims/Planet_Market/issues/39). I even logged a bug on GitHub for this and some links on how I learnt to fix this.
+
+### Known Issues & Challenges
 
 1. **Newsletter**
+
+To test if mailchip is accessible, just add `ping/` to end of the app url.
 
 - I had used mailchimp before so when perplexity research I use Mailchimp by an API and mailchmimp marketing.
 - I did not made sense, given the time, to let Mailchimp handle the newsletter subscriptions and for Mailchimp to handle the email sending.
@@ -769,29 +787,57 @@ I had no issues using it on any browser or any device.
 
 2. **Email Confirmation**
 
+I had to learn much about how django and allauth sends emails, so in settings.py I have added the following:
+
+```python
+EMAIL_SERVICE = 3 # or 1 or 3
+```
+
+- Option 1: Console emails
+- Option 2: File based emails to a temp folder
+- Option 3: Gmail based emails
+
+3. **Group Permissions and Management Commands**
+
+This was very hard to do. I really struggled with understanding and finally I got it to work, with much help from Windsurf and Claud3. It helped with also adding the manage.html view and template while doing this. Only staff, using staff@example.com, can add products, or go to management of products to edit or delete
+
+4. **Discounts**
+
+- This was improperly implemented so I developed a further, with some difficulty. However, I have implemented an input field on checkout and if it present or absent, to apply before the payment total is deducted. I think it works.
+
+5. **Field and Form Validations**
+
+- The product and review models needed to check for numbers only, and not negative values: So following perplexity and othe rinputs I added validators to each model as well as in the javascript.
+- The checkout form was easier as I did not change the model, however, the phone and postcode are regex and they are buggy for alot.  I found that UK postcodes work.
+- I also added a model field validation to check for minimum and maximum values for the discount code field.
+
+6. **Blog app**
+
+- I remove this as I thought the newsletter does this with subscriber model. I used this model to check if I have a local subscriber before sending to mailchimp.
+
+7. **Sitemaps and Metatags**
+
+- Windusrf helped me here bit.
+- To access the xml siitemap, in a django way, is to go to url of the app and add `/sitemap.xml` to the end.
+- I hardcoded my meta tags as it was too trick to add them per product, so I just kept ist simple.
+
 #### Feedback
 
-Documents fixes as per the feedback with 15 empty rows:
+I tried using GitHub to help with the fixes but I did not get everything done on GitHub. So the other fixes are in this readme file.
 
-| GitHub Issue No.                                           | Fix Description                    | Project Criteria Ref |
-|------------------------------------------------------------|------------------------------------|----------------------|
-| [28](https://github.com/dutchmims/Planet_Market/issues/28) | Make GutHub project board public   | LO2                  |
-| [29](https://github.com/dutchmims/Planet_Market/issues/29) | Configure GitHub Labels for MoSCoW | LO2                  |
-|                                                            |                                    |                      |
-|                                                            |                                    |                      |
-|                                                            |                                    |                      |
-|                                                            |                                    |                      |
-|                                                            |                                    |                      |
-|                                                            |                                    |                      |
-|                                                            |                                    |                      |
-|                                                            |                                    |                      |
-|                                                            |                                    |                      |
-|                                                            |                                    |                      |
-|                                                            |                                    |                      |
-|                                                            |                                    |                      |
-|                                                            |                                    |                      |
-
-###
+| GitHub Issue No.                                           | Fix Description                              | Project Criteria Ref |
+|------------------------------------------------------------|----------------------------------------------|----------------------|
+| [28](https://github.com/dutchmims/Planet_Market/issues/28) | Make GutHub project board public             | LO2                  |
+| [29](https://github.com/dutchmims/Planet_Market/issues/29) | Configure GitHub Labels for MoSCoW           | LO2                  |
+| [30](https://github.com/dutchmims/Planet_Market/issues/30) | Sufficient custom logic in project           | L01                  |
+| [31](https://github.com/dutchmims/Planet_Market/issues/31) | Lack of functional models.                   | L01                  |
+| [32](https://github.com/dutchmims/Planet_Market/issues/32) | Submitted Code is not Deployment Code: DEBUG | L01                  |
+| [33](https://github.com/dutchmims/Planet_Market/issues/33) | READMe file is missing key elements          | L01/LO2              |
+| [34](https://github.com/dutchmims/Planet_Market/issues/34) | Document the complete testing procedure      | L01                  |
+| [35](https://github.com/dutchmims/Planet_Market/issues/35) | Document the complete deployment procedure   | L01                  |
+| [36](https://github.com/dutchmims/Planet_Market/issues/36) | Missing Sitemap                              | L03                  |
+| [37](https://github.com/dutchmims/Planet_Market/issues/37) | Meta description tags missing                | L03                  |
+| [38](https://github.com/dutchmims/Planet_Market/issues/38) | Epics as Milestone                           | L02                  |
 
 > ---
 
@@ -1029,12 +1075,28 @@ else:
 
 3. I searched for my "Planet_Market" repository and clicked "Connect"
 
-### Admin Credentials
+### Admin & Staff Credentials
+
+For testing/checking
+
+- Checked and reset on Dec 02
 
 ```text
    * Username: admin
+   * Email: jameshealy901 at gmail.com
    * Password: Suleyman21!
 ```
+
+Staff
+
+```text
+   * Username: staff@example.com
+   * Email: staff at example.com
+   * Password: Suleyman21!
+```
+
+For other test accounts
+- Go to admin panel and reuse the existing non staff account.
 
 ### Environmental Variables
 
