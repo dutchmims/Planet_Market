@@ -755,9 +755,9 @@ I had no issues using it on any browser or any device.
 
 ### Setting Up Groups
 
-After a tip, I used Heroku Hero extension and a heroku API, to remote access the heroku remote. This allowed me to help fix a few bugs I had with databases (digits lengths bugs). And I used this along with the heroku cli commands.
+- After a tip, I used Heroku Hero extension and a heroku API, to remote access the heroku remote. This allowed me to help fix a few bugs I had with databases (digits lengths bugs). And I used this along with the heroku cli commands.
 
-For user permissions, I created a setup_groups management command to create groups and assign permissions to them.
+- For user permissions, I created a setup_groups management command to create groups and assign permissions to them.
 -
 ![](screenshots/setup_groups.png)
 
