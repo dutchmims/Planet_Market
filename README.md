@@ -365,10 +365,12 @@ These are rough ideas of a plan.
 ![Product Add](screenshots/Product-add-html.png)
 
 - Product Add
+  - Accessed via the staff login menu.
 
 ![Product Edit](screenshots/Product-edit-html.png)
 
 - Product Edit
+  - Accessed via the edit icon per product on product management page below.
 
 ![Product Management](screenshots/Product-management-html.png)
 
