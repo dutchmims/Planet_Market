@@ -10,9 +10,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Load environment variables from env.py
 env_file = os.path.join(BASE_DIR, "env.py")
 env_path = Path(env_file)
-# read the env.py file if it exists
+# read the env.py file if it exists, windsurf helped with this
 if env_path.exists():
-    # pylint: disable=exec-used
     with env_path.open("r", encoding="utf-8") as file:
         exec(file.read())
 
@@ -23,26 +22,25 @@ SECRET_KEY = os.getenv("SECRET_KEY", "")
 DEBUG = False
 
 if DEBUG:
-# Always include local development hosts
+    # Always include local development hosts
     ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 else:
+    # Allowed hosts did not like using environment variables
+    # Error 400 Bad Request so used plain values
     ALLOWED_HOSTS = [
-        "8000-dutchmims-planetmarket-bpjhkysy2er.ws.codeinstitute-ide.net",
+        "8000-dutchmims-planetmarket-bpjhkysy2er"
+        + ".ws.codeinstitute-ide.net",
         "planet-market-ef36a376b17d.herokuapp.com",
     ]
 
 # Add production hosts if they exist
 PRODUCTION_HOST_CI = os.getenv(
     "PRODUCTION_HOSTS_CI",
-    "8000-dutchmims-planetmarket-bpjhkysy2er.ws.codeinstitute-ide.net")
+    "8000-dutchmims-planetmarket-bpjhkysy2er"
+    + ".ws.codeinstitute-ide.net")
 PRODUCTION_HOSTS_HEROKU = os.getenv(
     "PRODUCTION_HOSTS_HEROKU",
     "planet-market-ef36a376b17d.herokuapp.com")
-
-# if PRODUCTION_HOST_CI:
-#    ALLOWED_HOSTS.append(PRODUCTION_HOST_CI)
-# if PRODUCTION_HOSTS_HEROKU:
-#    ALLOWED_HOSTS.append(PRODUCTION_HOSTS_HEROKU)
 
 # Application definition
 
@@ -53,8 +51,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django.contrib.sites",
-    "django.contrib.sitemaps",
+    "django.contrib.sites",  # added
+    "django.contrib.sitemaps",  # added
     "django_extensions",
     "allauth",
     "allauth.account",
@@ -64,7 +62,7 @@ INSTALLED_APPS = [
     "bag",
     "checkout",
     "profiles",
-    "newsletter",
+    "newsletter",  # new
     "crispy_forms",
     "storages",
 ]
@@ -82,7 +80,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = "planet_market.urls"
 
 # Crispy Forms Settings
-CRISPY_TEMPLATE_PACK = "bootstrap4"
+CRISPY_TEMPLATE_PACK = "bootstrap4"  # version 4 not 5.
 
 TEMPLATES = [
     {
@@ -102,8 +100,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.media",
                 "bag.contexts.bag_contents",
-                # Fix | # added by - to handle sitename in meta tags
-                # and not hardcoded
+                # to handle sitename in meta tags
                 "home.context_processors.site_name",
             ],
             "builtins": [
@@ -127,7 +124,7 @@ SITE_ID = 1
 # Allauth configuration
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = False
 ACCOUNT_USERNAME_MIN_LENGTH = 4
 LOGIN_URL = "/accounts/login/"
@@ -135,16 +132,12 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 # Additional Allauth Settings
+ACCOUNT_LOGIN_BY_CODE_REQUIRED = False  # stops email on login
 ACCOUNT_LOGOUT_ON_GET = False  # Requires POST request to logout
 ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 ACCOUNT_PRESERVE_USERNAME_CASING = False
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_UNIQUE_EMAIL = True
-# ACCOUNT_USERNAME_BLACKLIST = [
-#     "admin",
-#     "administrator",
-#     "staff"
-# ]
 
 WSGI_APPLICATION = "planet_market.wsgi.application"
 
@@ -178,6 +171,8 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.MD5PasswordHasher",
 ]
 
+# Once this tip was mentioned, it made sense to add this
+# Local development settings
 if DEBUG:
     DATABASES = {
         "default": {
@@ -186,7 +181,11 @@ if DEBUG:
         }
     }
 else:
-    DATABASES = {"default": dj_database_url.parse(os.getenv("DATABASE_URL"))}
+    # Heroku
+    DATABASES = {
+        "default":
+        dj_database_url.parse(os.getenv("DATABASE_URL"))
+    }
 
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 # Internationalization
@@ -213,11 +212,14 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+# AWS settings
 if not DEBUG and "USE_AWS" in os.environ:
     # Cache control
     AWS_S3_OBJECT_PARAMETERS = {
         "Expires": os.getenv("AWS_S3_EXPIRES"),
-        "CacheControl": os.getenv("AWS_CACHE_CONTROL", "max-age=94608000"),
+        "CacheControl": os.getenv(
+            "AWS_CACHE_CONTROL",
+            "max-age=94608000"),
     }
 
     # Bucket Config
@@ -264,6 +266,7 @@ STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
 STRIPE_WH_SECRET = os.getenv("STRIPE_WH_SECRET", "")
 
 # Email settings
+# With some tips, managed to understand how django sends emails
 EMAILSERVICE = 3
 
 if EMAILSERVICE == 1:
@@ -281,9 +284,13 @@ elif EMAILSERVICE == 2:
     # Built into Django
 
     EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-    EMAIL_FILE_PATH = os.getenv("EMAIL_FILE_PATH", "tmp/email-messages/")
+    EMAIL_FILE_PATH = os.getenv(
+        "EMAIL_FILE_PATH",
+        "tmp/email-messages/")
 
 elif EMAILSERVICE == 3:
+    # I used Gmail SMTP and an app password
+    # Windsurf helped with backend configuration
     EMAIL_BACKEND = "planet_market.email_backend.EmailBackend"
     EMAIL_HOST = "smtp.gmail.com"
     EMAIL_PORT = 587
@@ -293,6 +300,7 @@ elif EMAILSERVICE == 3:
     DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Mailchimp Settings
+# Works locally, but not on heroku
 MAILCHIMP_API_KEY = os.environ.get('MAILCHIMP_API_KEY')
 MAILCHIMP_REGION = os.environ.get('MAILCHIMP_REGION')
 MAILCHIMP_LIST_ID = os.environ.get('MAILCHIMP_LIST_ID')
