@@ -7,61 +7,66 @@
 ## Table of Contents
 
 1. [Project Overview](#project-overview)
-   - [Objective](#objective)
-   - [Key Features](#key-features)
-   - [User-Centric Experience](#user-centric-experience)
-   - [Admin Functionality](#admin-functionality)
-   - [Secure Transactions](#secure-transactions)
-   - [Deployment and Hosting](#deployment-and-hosting)
-   - [Technical Stack](#technical-stack)
-   - [Significance](#significance)
-   - [Target Audience](#target-audience)
+      - [Objective](#objective)
+      - [Key Features](#key-features)
+      - [User-Centric Experience](#user-centric-experience)
+      - [Admin Functionality](#admin-functionality)
+      - [Secure Transactions](#secure-transactions)
+      - [Deployment and Hosting](#deployment-and-hosting)
+      - [Technical Stack](#technical-stack)
+      - [Significance](#significance)
+      - [Target Audience](#target-audience)
 2. [Project Approach](#project-approach)
-   - [Agile Framework Overview](#agile-framework-overview)
-   - [GitHub Configuration](#github-configuration)
-   - [Projects + Kanban Board](#projects--kanban-board)
-   - [Epics as Milestones](#epics-as-milestones)
-   - [User Stories](#user-stories)
-   - [Development Process](#development-process)
-   - [Testing and Feedback](#testing-and-feedback)
-   - [Deployment and Review](#deployment-and-review)
+      - [Agile Framework Overview](#agile-framework-overview)
+      - [GitHub Configuration](#github-configuration)
+      - [Projects + Kanban Board](#projects--kanban-board)
+      - [Epics as Milestones](#epics-as-milestones)
+      - [User Stories](#user-stories)
+      - [Development Process](#development-process)
+      - [Testing and Feedback](#testing-and-feedback)
+      - [Deployment and Review](#deployment-and-review)
 3. [User Experience](#user-experience)
-   - [UI Features](#ui-features)
-   - [Functional Features](#functional-features)
+      - [UI Features](#ui-features)
+      - [Functional Features](#functional-features)
 4. [Design](#design)
-   - [Fonts used](#fonts-used)
-   - [Wireframe design](#wireframe-design)
-   - [Color](#color)
+      - [Fonts used](#fonts-used)
+      - [Wireframe design](#wireframe-design)
+      - [Color](#color)
 5. [Data Model](#data-model)
-   - [ERD Diagram](#erd-diagram)
+      - [ERD Diagram](#erd-diagram)
 6. [Epics and User Stories](#epics-and-user-stories)
-   - [Project Goals](#project-goals)
-   - [User Goals](#user-goals)
-   - [Returning User Goals](#returning-user-goals)
-   - [Website Owner Goals](#website-owner-goals)
+      - [Project Goals](#project-goals)
+      - [User Goals](#user-goals)
+      - [Returning User Goals](#returning-user-goals)
+      - [Website Owner Goals](#website-owner-goals)
 7. [Business Model](#business-model)
-   - [Outline](#outline)
+      - [Outline](#outline)
 8. [Validation](#validation)
-   - [W3C HTML and CCS Validation](#w3c-html-and-ccs-validation)
+      - [W3C HTML and CCS Validation](#w3c-html-and-ccs-validation)
 9. [Testing](#testing)
-    - [Test Cases](#test-cases)
-    - [Bugs](#bugs)
+      - [Test Cases](#test-cases)
+      - [Bugs](#bugs)
 10. [Development](#development)
-   - [Future Developments](#future-developments)
+      - [Future Developments](#future-developments)
+      - [Technologies and Languages Used](#technologies-and-languages-used)
+      - [Environments](#environments)
+      - [Key Differences: Gitpod vs Heroku](#key-differences-gitpod-vs-heroku)
 11. [Deployment](#deployment)
-    - [Setting Up P Project](#setting-up-p-project)
-    - [Setting Up Heroku](#setting-up-heroku)
-    - [Connecting to GitHub](#connecting-to-github)
-    - [Admin Credentials](#admin-credentials)
-    - [Environmental Variables](#environmental-variables)
-    - [Setting Up Environment Variables](#setting-up-environment-variables)
-    - [Deploying My Code](#deploying-my-code)
-    - [Checking My Site](#checking-my-site)
-    - [Troubleshooting Tips](#troubleshooting-tips)
-    - [Useful Commands I Used](#useful-commands-i-used)
-    - [Some Notes](#some-notes)
+      - [Setting Up P Project](#setting-up-p-project)
+      - [Setting Up Heroku](#setting-up-heroku)
+      - [Connecting to GitHub](#connecting-to-github)
+      - [Admin Credentials](#admin-credentials)
+      - [Environmental Variables](#environmental-variables)
+      - [Setting Up Environment Variables](#setting-up-environment-variables)
+      - [Deploying My Code](#deploying-my-code)
+      - [Checking My Site](#checking-my-site)
+      - [Troubleshooting Tips](#troubleshooting-tips)
+      - [Useful Commands I Used](#useful-commands-i-used)
+      - [Some Notes](#some-notes)
 12. [Acknowledgements](#acknowledgements)
-
+      - [Developer Note](#developer-note)
+      - [Readme Reformat](#readme-reformat)
+      - [Citations](#citations)
 
 # Project Overview
 
@@ -71,29 +76,31 @@
 > Course: Code Institute Full Stack Software Development (Portfolio Project 5) <br>
 
 ### Objective
+
 Planet Market is a fictional e-commerce platform designed to showcase the development of a responsive and secure full-stack web application using Django, PostgreSQL, and Amazon AWS S3. The goal is to create a functional online store where users can browse and purchase electronic and digital hardware.
 
 ### Key Features
+
 Responsive Design:
 
 - Built with a mobile-first approach to ensure compatibility across all devices.
 - Features a clean, modern, and minimalistic design with an elegant font and neutral color palette.
 
-### User-Centric Experience:
+### User-Centric Experience
 
 - Easy user registration and authentication.
 - Intuitive navigation for browsing and filtering products.
 - Seamless shopping experience with a clear and simple checkout process.
 
-### Admin Functionality:
+### Admin Functionality
 
 - Product management capabilities for admins, allowing easy updates to the product catalog.
 
-### Secure Transactions:
+### Secure Transactions
 
 - Integrated with Stripe for safe and straightforward payment processing.
 
-### Deployment and Hosting:
+### Deployment and Hosting
 
 - Deployed on Heroku for high availability and scalability.
 - Static and media file storage handled by AWS S3, ensuring reliable content delivery.
@@ -128,16 +135,19 @@ The development of Planet Market followed an Agile methodology, using GitHub as 
 
 This was the second time I practiced agile in the development and planning of my project. Recentlyt I learn more about user stories, epics and features from this [resource](https://www.gla.ac.uk/media/Media_730149_smxx.pdf "Glasgow University: Epics, User Stories and Features")
 
-The following were defined in GitHub, as the primary Agile management tool.
+The following were defined in GitHub, as the my main Agile management tool.
 
 ### GitHub Configuration
 
 I set up the following:
 
 1. GitHub Templates:
-  - User_Story.md: To defined the user needs, tasks to complete and user acceptance criteria.
-  - Feedback.md: To document the submission feedback fixes.
-  - Bugs.md: To document the bugs found in submission.
+  Via repository settings:
+
+- User_Story.md: To defined the user needs, tasks to complete and user acceptance criteria.
+- Feedback.md: To document the submission feedback fixes.
+- Bugs.md: To document the bugs found in submission.
+
 2. GitHub Labels - for MoSCoW priority
 3. GitHub Project - for Agile Management
 4. GitHub Milestone for Epics
@@ -145,13 +155,12 @@ I set up the following:
 
 ### Projects + Kanban Board
 
-- https://github.com/features/issues
-- https://docs.github.com/en/issues/planning-and-tracking-with-projects
+- <https://github.com/features/issues>
+- <https://docs.github.com/en/issues/planning-and-tracking-with-projects>
 
 1. The GitHub Project used for this project is here.
 2. Kanban Board was configured
 3. MoSCoW Priority Matrix added as [labels for issues and on the project board](https://docs.github.com/en/issues/planning-and-tracking-with-projects).
-
 
 | MoSCoW Label | Implementation                                                   | Role in Development                                           | User Story |
 |--------------|------------------------------------------------------------------|---------------------------------------------------------------|------------|
@@ -160,7 +169,7 @@ I set up the following:
 | Could Have   | Desirable features that are not necessary for core functionality | Nice-to-have, implement if time/resources allow               | `Like`     |
 | Won't Have   | Features that are not planned for the current project scope      | Excluded from current development, potential future additions | `Don't`    |
 
-See the basic user story template.
+See the basic user story template below.
 
 ### Epics as Milestones
 
@@ -181,7 +190,7 @@ I created 8 Milestones, aliging with the learning outcomes of the Code Institute
 
 I created a list of user stories to assist in the development and implementation writing code and building the website.
 
-An example basic user story template is:
+An example basic user story template is, and has hint to prioritising in need|shoul|like|don't:
 
 ```
 As a <user_type>
@@ -205,14 +214,14 @@ I listed, in GitHub Issues / Project Board, the user story testing criteria and 
 
 Each sprint was focused on completing a set of user stories, delivering incremental progress.
 
-#### Sprint Workflow:
+#### Sprint Workflow
 
 1. Add user stories and tasks to the Kanban board under "To Do."
 2. Move tasks to "In Progress" during active development.
 3. Conduct testing and peer reviews for tasks in "In Review."
 4. Mark tasks as "Completed" once approved.
 
-#### Key Features by Sprint:
+#### Key Features by Sprint
 
 These are rough ideas of a plan.
 
@@ -221,49 +230,48 @@ These are rough ideas of a plan.
 - Sprint 3: Shopping cart, checkout process with Stripe payment integration.
 - Sprint 4: Initial deployment to Heroku, and AWS S3 integration.
 
-*Submission*
+> *Submission*
 
+- Sprint 4: Feedback into GitHub (Fixes) and readme setup for submission.
 - Sprint 5: Newsletter subscription and discount codes and other feedback changes.
 - Sprint 6: Final deployment to Heroku inclusive of feedback changes.
 
-*Submission*
+> *Submission*
 
 ### Testing and Feedback
 
 - Manual testing of user flows like login, browsing, and checkout.
 
-#### Bug Tracking:
+#### Bug Tracking
 
 - Bugs were documented using the Bugs.md template and tracked on the GitHub Project board.
 
-####Feedback Management:
+#### Feedback Management
 
 - Fixes and improvements based on submission feedback were documented using the Feedback.md template.
 
 ### Deployment and Review
 
-#### Final Deployment:
+#### Final Deployment
 
 - Deployed the application on Heroku, with static and media files hosted on AWS S3.
 - Ensured a production-ready setup by managing environment variables and conducting final tests.
 
-#### Review:
+#### Review
 
 ##### What went well?
 
 - Efficient use of GitHub tools for Agile management.
 - Integration of feedback during sprints improved the final product.
 
-#####Challenges:
+##### Challenges
 
 - Managing unexpected bugs delayed certain milestones.
 
-##### Improvements:
+##### Improvements
 
 - Allocate more time for testing and feature development.
 - By combining Agile methodology with GitHub tools, the project was managed efficiently, ensuring high-quality deliverables through incremental and iterative progress.
-
-
 
 > ---
 
@@ -287,14 +295,13 @@ These are rough ideas of a plan.
 | Main Page                |                                                                                                                                                            |                |
 | Footer                   |                                                                                                                                                            |                |
 
-> - From the original readme. Turned a list into a table with Perplexity.ai
-
+> - From the original readme. Turned a list into a table with Perplexity.ai <br>
+>
 > ---
 
 ## Functional Features
 
 > - New to the original readme.
-
 
 | Feature ID | Feature Name             | Description                                                         | User Acceptance Criteria                                                                                                                                                                   |
 |------------|--------------------------|---------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -311,9 +318,9 @@ These are rough ideas of a plan.
 | PROF-002   | Staff Management         | Staff/admin account & product management access                     | - Profile information can be updated<br>- Order history is viewable<br>- Shipping addresses can be saved<br>- Changes persist correctly<br>- Data validation works                         |
 | NEWS-001   | Newsletter Subscription  | Email subscription service for marketing and updates                | - Email subscription form is accessible<br>- Email validation works<br>- Confirmation is sent<br>- Unsubscribe option available<br>- Welcome email is received                             |
 | NEWS-002   | Social Media Integration | Social media business pages and follow us links                     | - Facebook page is accessible <br>- Instagram page is accessible <br>- Follow us links are functional<br>                                                                                  |
-|            |                          |                                                                     |                                                                                                                                                                                            |
 
 ### Feature Categories
+
 1. User Management (AUTH)
 2. Product Management (PROD)
 3. Shopping Experience (BAG)
@@ -331,62 +338,72 @@ These are rough ideas of a plan.
 ![Wirefrema image of Tablet](<screenshots/Screenshot 2024-08-10 at 16.34.00.png>)
 ![Wirefrema image of Mobile](<screenshots/Screenshot 2024-08-10 at 16.33.44.png>)
 
-
 ### Screenshots
 
 ![Home Page](<screenshots/Home-html.png>)
+
 - Home Page
+
 ![Bag](screenshots/Bag-html.png)
+
 - Bag
 
 ![Checkout](screenshots/Checkout-html.png)
+
 - Checkout
 
 ![Products](screenshots/Products-html.png)
+
 - Products Page
 
 ![Product Detail](screenshots/Product-detail-html.png)
+
 - Product Detail
 
 ![Product Add](screenshots/Product-add-html.png)
+
 - Product Add
 
 ![Product Edit](screenshots/Product-edit-html.png)
+
 - Product Edit
 
 ![Product Management](screenshots/Product-management-html.png)
+
 - Product Management**
   - This is new since last review, however it helped me fix a bug & feature in editing and deleting products in one view
   - It helps the business owner review his inventory and make changes.
 
-
 ![Register](screenshots/register.png)
+
 - Register
 
 ![Login](screenshots/login.png)
+
 - Login
 
 ![Profile](screenshots/profile.png)
+
 - Profile
 
 ![Subscribe](screenshots/Newsletter.png)
+
 - Newsletter Subscribe
 
 ![Unsubscribe](screenshots/Newsletter.png)
+
 - Newsletter Unsubcribe
 
 ![Footer](screenshots/Footer.png)
+
 - Footer with newsletter subscription form and follow us social media links
+
 ### Fonts used
 
-  - --Roboto--
+- --Roboto--
     I used Rototo because it has a dual nature. It has a mechanical skeleton and the forms are largely geometric. At the same time, the font features friendly and open curves.
 
-
 ### Color
-
-
-
 
 | Section           | Element              | Color Code | Usage              |
 |-------------------|----------------------|------------|--------------------|
@@ -407,8 +424,6 @@ These are rough ideas of a plan.
 |                   | No Rating Text       | #999999    | Light Gray         |
 | Categories        | Tag Text             | #666666    | Medium Gray        |
 
-
-
 ## Data Model
 
 | App             | Table          | Foreign Keys                               | Description                                                     |
@@ -426,14 +441,14 @@ These are rough ideas of a plan.
 
 ### ERD Diagram
 
-![](project_erd.png)
+![ERD](project_erd.png)
 
 > ---
 
 # Epics and User Stories
 
-
 ## Epics
+>
 > Added on GitHub via [Milestones]
 
 ## Initial User Stories
@@ -500,6 +515,7 @@ These are rough ideas of a plan.
 | 24         | As a business owner I want to track the effectiveness of marketing campaigns, analyze conversion rates, and explore new advertising channels** so that I can increase brand visibility and sales                            | [WOG-005](https://github.com/dutchmims/Planet_Market/issues/24 "USER STORY: Marketing and Advertising #24")             | ⚠️ Mailchimp, Newsletter                                      |
 | 25         | As a business owner I want the ability to customize the e-commerce platform, <rn>including branding, website design, and the arrangement of product categories so that I can align with the business's unique identity      | [WOG-005](https://github.com/dutchmims/Planet_Market/issues/26 "USER STORY: Platform Customization #26")                | ⚠️ Product Categories                                         |
 | 26         | As a business owner I want to explore and manage multi-channel selling opportunities,<br> such as integration with marketplaces or social media platforms so that I can expand the reach of the business                    | [WOG-005](https://github.com/dutchmims/Planet_Market/issues/27 "USER STORY: Multi-Channel Selling #27")                 | ✅ Social Media Pages                                          |
+
 <br>
 
 > ---
@@ -549,7 +565,6 @@ Analytics for tracking sales trends and inventory.
 - Tech-savvy individuals seeking reliable hardware (e.g., laptops, peripherals, smart devices).
 - Small business owners looking for affordable tech solutions.
 - Gamers and digital creators seeking specialized hardware.
-
 
 **Secondary Audience**:
 
@@ -666,11 +681,9 @@ Resolving customer inquiries and complaints through email, chat, or phone suppor
 
 > ---
 
-
-
 ## Validation
 
-### W3C HTML and CCS Validation
+### W3C HTML and CSS Validation
 
 #### HTML
 
@@ -712,6 +725,7 @@ Other pages are validated in the same way. I just focused on the main pages/app.
 I used ruff to check my Python code and I my files checked with pep8.codeinstitute.herokuapp.com.
 
 # Testing
+
 My project was tested on macbook using the Google Chrome, Mozilla Firefox and Safari.
 It was also tested on an IPhone and a IPad.
 I had no issues using it on any browser or any device.
@@ -733,7 +747,6 @@ I had no issues using it on any browser or any device.
 | DISC-001  | Discounts      | Apply Discount Code | 1. Add items to bag<br>2. Enter discount code<br>3. Apply code<br>4. Check total                                                | - Discount applied correctly<br>- Total updated<br>- Success message shown                      | Test invalid codes             |
 | DISC-002  | Discounts      | Discount Validation | 1. Test expired codes<br>2. Test usage limits<br>3. Test minimum spend<br>4. Test product restrictions                          | - Appropriate error messages<br>- No invalid discounts applied<br>- Clear user feedback         | Test multiple codes            |
 
-
 ## Bugs
 
 - I had lots of bugs while writing this project.
@@ -741,11 +754,9 @@ I had no issues using it on any browser or any device.
 - This was resolved after using several sources, including youtube tutorials, codemy.com, w3schools.com and perplexity.
 - I also found, after being refereed to, to install [Windsurf - https://codeium.com/windsurf](https://codeium.com/windsurf) on my macbook, and to use the integrated Claude3 LLM Ai model for coding in chatmode. Claude is like ChatGPt and I was told it is very good for coding, which I found it helped me a lot and made coding easier.
 
-
-
 ## Known Issues
 
-1. **Newsletter**:
+1. **Newsletter**
 
 - I had used mailchimp before so when perplexity research I use Mailchimp by an API and mailchmimp marketing.
 - I did not made sense, given the time, to let Mailchimp handle the newsletter subscriptions and for Mailchimp to handle the email sending.
@@ -756,9 +767,7 @@ I had no issues using it on any browser or any device.
 - Additionally [perplexity also said that I would have to pay for both Heroku and Mailchimp to get the service to work.](https://www.perplexity.ai/search/is-there-any-simple-and-free-w-O1sjAKNRSyadVymmeLTS5w)
 - So this can be tested locally and not on heroku.
 
-2. **Email Confirmation**:
-
-
+2. **Email Confirmation**
 
 #### Feedback
 
@@ -784,7 +793,6 @@ Documents fixes as per the feedback with 15 empty rows:
 
 ###
 
-
 > ---
 
 ## Development
@@ -805,7 +813,7 @@ Documents fixes as per the feedback with 15 empty rows:
 | Fonts              | Roboto, GoogleAPIS  | n/a                  | Font rendering and loading                               |
 | Forms              | django-crispy-forms | `1.14.0`             | Form rendering and handling                              |
 | Countries          | django-countries    | `7.2.1`              | Country selection fields                                 |
-| Storage            | django-storages     | `1.14.3 `            | Cloud storage integration                                |
+| Storage            | django-storages     | `1.14.3`             | Cloud storage integration                                |
 | Server             | gunicorn            | `22.0.0`             | WSGI HTTP Server                                         |
 | Database (Dev)     | SQLite3             | Latest               | Local development database                               |
 | Database (Prod)    | PostgreSQL          | `13+`                | Production database                                      |
@@ -830,14 +838,32 @@ Documents fixes as per the feedback with 15 empty rows:
 | Storage         | AWS S3     | Latest  | Static/Media file storage, CDN integration                |                             |
 | Payments        | Stripe     | v3      | Payment processing, webhooks                              |                             |
 
-- * ( Key extensions, too numerous to list - though I now like using visual commits, staging and version control as it is much easier to see what has changed. )
+- - ( Key extensions, too numerous to list - though I now like using visual commits, staging and version control as it is much easier to see what has changed. )
 - ** Windsurf has Claude integrated in, This made understanding mh code so much eaier as Windsorf could look at my code and tell me what I needed.
 
 ### Environments
 
+#### Local Development Environment (VSCode.app/Windsurf.app)
+
+I moved to a local development environment using VSCode.app, with the AI-powered Perplexity search engine to find and answer questions and give me feedback on this project.
+
+I also found Windsurf, after moving to VSCode. I found Windsurf had a nice integrated Claude3 AI model, which I used to get code suggestions in chat mode.
+
+It took me a bit to understand VSCode and Windsurf on my mac, like needing help with file permission issues on my code to make changes. Though I like visual commiting over terminal commands now.
+
+1. GitHub Account
+   - Sign up at: [github.com](https://github.com)
+   - Used for code repository and Gitpod integration
+
+2. Windsurf Account & Perplexity Account
+   - Sign up at [perplexity.ai](https://www.perplexity.ai)
+   - Sign up at [Codieum & Windsurf](https://codeium.com/)
+   - Used for AI code editing in chat mode.
+
 #### Remote Development Environment (Gitpod)
 
 ##### Required Accounts
+
 1. GitHub Account
    - Sign up at: [github.com](https://github.com)
    - Used for code repository and Gitpod integration
@@ -848,16 +874,19 @@ Documents fixes as per the feedback with 15 empty rows:
    - Can sign up using GitHub account
 
 ##### Gitpod Setup
+
 1. Gitpod Browser Extension
    - Install from: [Gitpod Extension](https://www.gitpod.io/docs/browser-extension)
    - Adds "Gitpod" button to GitHub repositories
 
 2. Gitpod Configuration
+
 - Project includes `.gitpod.yml`
 
 #### Development Tools in Gitpod
 
 ##### Pre-installed Extensions
+
 - Python
 - Django
 - Git
@@ -865,10 +894,12 @@ Documents fixes as per the feedback with 15 empty rows:
 - IntelliSense
 
 ##### Python Packages
+
 From requirements.txt:
 
 A selection of packages included in the requirements.txt file:
-```
+
+```text
 asgiref==3.7.2
 boto3==1.34.14
 botocore==1.34.14
@@ -899,7 +930,6 @@ typing_extensions>=4.11.0
 urllib3==2.0.7
 ```
 
-
 ##### Database
 
 I used, after a useful tip, DEBUG if ... else statement in settings.py to improve switching databses for local and remote development/deploying.
@@ -911,11 +941,13 @@ I used, after a useful tip, DEBUG if ... else statement in settings.py to improv
 #### Heroku Deployment Environment
 
 ##### Required Add-ons
+
 1. Heroku Postgres (Database)
    - Plan: Hobby Dev (Free)
    - Auto-added config var: `DATABASE_URL`
 
 ##### Static & Media Files
+
 - Production: Amazon S3
 - Bucket structure:
   - static/
@@ -932,6 +964,7 @@ I used, after a useful tip, DEBUG if ... else statement in settings.py to improv
 | Environment  | Gitpod Variables  | Config Vars | Added via heroku cli: heroku config:set             |
 
 ## Some Notes
+
 1. Set environment variables in via Heroku Cli and checked via Gitpod dashboard/heroku dashboard
 2. Tested before deploying to Heroku
 3. Use `.gitignore` for sensitive files
@@ -941,17 +974,19 @@ I used, after a useful tip, DEBUG if ... else statement in settings.py to improv
 ## Deployment
 
 ### Setting Up P Project
+
 First, I made sure my project was ready for deployment:
 
 1. I checked that my `requirements.txt` was up to date by running:
 
-```
-   pip freeze > requirements.txt
-```
+   ```text
+      pip freeze > requirements.txt
+   ```
 
 2. I created a `Procfile` (I already had one, but here's what's in it):
-   ```
-   web: gunicorn planet_market.wsgi:application
+
+   ```text
+      web: gunicorn planet_market.wsgi:application
    ```
 
 3. I made sure my `settings.py` had all the Heroku settings:
@@ -960,7 +995,8 @@ First, I made sure my project was ready for deployment:
 - I used, after a useful tip, DEBUG if ... else statements in settings.py to improve switching static & media files for local and remote development/deploying.
 
 for example:
-```
+
+```python
 DEBUG = False
 
 if DEBUG:
@@ -979,13 +1015,14 @@ else:
 5. In the "Resources" tab, I added "Heroku Postgres" from the add-ons section
    - In settings, select buildpack, then select Python and Node.js. Python must be 1st in the list.
    - In settings, click reveal config vars, then add your `KEY`, `PORT`, and `VALUE` variabiles.
-5. Started the deployment process
+6. Started the deployment process
    - Click deploy then select your deploy method and repository.
    - Click "Connect" on selected repository.
    - Click deploy branch.
    - Heroku deploys the site.
 
 ### Connecting to GitHub
+
 1. I went to the "Deploy" tab in my Heroku app
 
 2. I chose "GitHub" as my deployment method
@@ -993,10 +1030,10 @@ else:
 3. I searched for my "Planet_Market" repository and clicked "Connect"
 
 ### Admin Credentials
-#
-```
-* Username: admin
-* Password: Suleyman21!
+
+```text
+   * Username: admin
+   * Password: Suleyman21!
 ```
 
 ### Environmental Variables
@@ -1010,11 +1047,12 @@ I did the following:
 Examples of these environmental key value pairs are:
 
 ### Setting Up Environment Variables
+
 In the "Settings" tab, I clicked "Reveal Config Vars" and added these, as a few examples (not everything is included for brevity):
 
 - I also moved other configuration variables from `settings.py` to `env.py` and via heroku:config set to heroku. See the reveal config vars example at heroku.com.
 
-```
+```text
 DATABASE_URL: mydburl-neon-tech once the pycogpg2 installs
 SECRET_KEY: my-secret-key
 DEFAULT_FROM_EMAIL: my-email@example.com
@@ -1059,6 +1097,7 @@ For final deployment and feedback fixe I moved off Gitpod and installed my setup
    5. I ran `heroku run python manage.py collectstatic --noinput`
 
 ### Checking My Site
+
 1. Once deployment finished, I clicked "View" to see my site
 2. I tested:
    - Creating an account
@@ -1070,16 +1109,19 @@ For final deployment and feedback fixe I moved off Gitpod and installed my setup
    - You can view the /unsubscribe-success/ and /unsubscribe-fail/ views on message.html
 
 ### Troubleshooting Tips
+
 If something went wrong, I:
+
 1. Checked the Heroku logs by clicking "More" → "View logs"
 2. Made sure all my environmental vars were correct
 3. Confirmed my Procfile was in the root directory
 4. Verified my requirements.txt had all needed packages
 
 ### Useful Commands I Used
+
 When working locally, these commands helped me:
 
-```
+```text
 python manage.py check        # check before I ran server and when I made a change
 python manage.py runserver    # check before I ran server and when I made a change
 git push origin main          # Push my changes to GitHub.com
@@ -1095,6 +1137,7 @@ heroku run python manage.py loaddata products/fixtures/categories.json  && produ
 - I learnt how to load the data using the command `python manage.py loaddata products/fixtures/categories.json  && products/fixtures/products.json` from perplexity.ai
 
 ### Some Notes
+
 - I never committed sensitive data to GitHub
 - I ran django's checks command after every major change.
 - I kept my `DEBUG = False` in production and submission - this is notable.
@@ -1104,6 +1147,7 @@ heroku run python manage.py loaddata products/fixtures/categories.json  && produ
 > ---
 
 # Acknowledgements
+
 > Citations, References, Code Reuse and Image sources
 
 ### Developer Note
@@ -1114,7 +1158,7 @@ heroku run python manage.py loaddata products/fixtures/categories.json  && produ
 
 ### Readme Reformat
 
-I learnt a trick to reformat list items into table, by asking Perplexity to reformat parts of this document as empty markdown tables, and then adding my own text.
+I learnt a trick to reformat list items into table, by asking Perplexity to reformat parts of this document as empty markdown tables, and then adding my own text. Also i found this guide useful - <https://www.markdownguide.org/basic-syntax/>
 
 I looked through recent PP5 submissions, given the feedback on how to my first README was missing sections, and spent a lot of time into getting this right. I want to acknowledge Kieran Chambers's projects' readme for the additional structure and formating ideas.
 
@@ -1124,22 +1168,23 @@ I looked through recent PP5 submissions, given the feedback on how to my first R
 
 - I watched and used the below websites, tutorials and advice.
 
-| Title                              | Link                                                            | Description                                                         |
-|------------------------------------|-----------------------------------------------------------------|---------------------------------------------------------------------|
-| Django Models Tutorial             | https://www.w3schools.com/django/django_models.php              | W3Schools tutorial on Django models                                 |
-| Django Models Introduction         | https://www.youtube.com/watch?v=5zNR3E6WRLE                     | YouTube video introducing Django models                             |
-| Creating Database Tables in Django | https://www.youtube.com/watch?v=rI95wyHD_6k                     | YouTube tutorial on creating database tables in Django              |
-| Bootstrap 4 & 5 Introduction       | https://getbootstrap.com/docs/5.0/getting-started/introduction/ | Official Bootstrap 5 documentation introduction                     |
-| Bootstrap 4 & 5 Tutorial           | https://www.w3schools.com/bootstrap5                            | W3Schools tutorial on Bootstrap 5                                   |
-| Bootstrap 4 & 5 Crash Course       | https://www.youtube.com/watch?v=MG9itGX1hD0                     | YouTube crash course on Bootstrap 5                                 |
-| Django Tutorial                    | https://www.w3schools.com/django/                               | W3Schools comprehensive Django tutorial                             |
-| Django Crash Course                | https://www.youtube.com/watch?v=B40bteAMM_M                     | YouTube crash course on Django                                      |
-| Integrating Mailchimp with Django  | https://testdriven.io/blog/django-mailchimp/                    | Integrate Mailchimp with Django to handle newsletter subscriptionss |
-| Django Crash Course                | https://www.youtube.com/watch?v=B40bteAMM_M                     | YouTube crash course on Django                                      |
-| Perplexity AI                      | https://www.perplexity.ai/                                      | AI-powered search engine and question-answering system              |
-| Windsurf by Codeium                | https://codeium.com/windsurf                                    | AI IDE  as a fork of VSCode.app for mac                             |
+| Title                              | Link                                                              | Description                                                         |
+|------------------------------------|-------------------------------------------------------------------|---------------------------------------------------------------------|
+| Django Models Tutorial             | <https://www.w3schools.com/django/django_models.php>              | W3Schools tutorial on Django models                                 |
+| Django Models Introduction         | <https://www.youtube.com/watch?v=5zNR3E6WRLE>                     | YouTube video introducing Django models                             |
+| Creating Database Tables in Django | <https://www.youtube.com/watch?v=rI95wyHD_6k>                     | YouTube tutorial on creating database tables in Django              |
+| Bootstrap 4 & 5 Introduction       | <https://getbootstrap.com/docs/5.0/getting-started/introduction/> | Official Bootstrap 5 documentation introduction                     |
+| Bootstrap 4 & 5 Tutorial           | <https://www.w3schools.com/bootstrap5>                            | W3Schools tutorial on Bootstrap 5                                   |
+| Bootstrap 4 & 5 Crash Course       | <https://www.youtube.com/watch?v=MG9itGX1hD0>                     | YouTube crash course on Bootstrap 5                                 |
+| Django Tutorial                    | <https://www.w3schools.com/django/>                               | W3Schools comprehensive Django tutorial                             |
+| Django Crash Course                | <https://www.youtube.com/watch?v=B40bteAMM_M>                     | YouTube crash course on Django                                      |
+| Integrating Mailchimp with Django  | <https://testdriven.io/blog/django-mailchimp/>                    | Integrate Mailchimp with Django to handle newsletter subscriptionss |
+| Django Crash Course                | <https://www.youtube.com/watch?v=B40bteAMM_M>                     | YouTube crash course on Django                                      |
+| Perplexity AI                      | <https://www.perplexity.ai/>                                      | AI-powered search engine and question-answering system              |
+| Windsurf by Codeium                | <https://codeium.com/windsurf>                                    | AI IDE  as a fork of VSCode.app for mac                             |
 
 ### Code Reuse
+
 - I used the Code Institute's Boutique Ado as a base for my project.
 - I utilised many online sources to help me create my project.
 - I used Code Institute Slack groups for help and advice for my project.
